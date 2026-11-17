@@ -1,15 +1,18 @@
 # Screenshots
 
-Drop screen grabs here using these names (PNG or JPG; update `index.html` if you change names):
+Drop screen grabs here using these names. Until a file exists, the page shows a
+drawn preview (marked "Illustration"); the real image replaces it automatically.
 
-| Tool              | Files                            |
-|-------------------|----------------------------------|
-| BLAST Tool        | `blast-1.png`, `blast-2.png`     |
-| Blast Calculator  | `blast-calc-1.png`, `blast-calc-2.png` |
-| VDA-Tool          | `vda-1.png`, `vda-2.png`         |
-| Door Configurator | `door-1.png`, `door-2.png`       |
-| Project Tracker   | `tracker-1.png`                  |
+| Tool              | Files                                |
+|-------------------|--------------------------------------|
+| Blast Calculator  | `blast-1.png`, `blast-2.png`         |
+| VDA-Tool          | `vda-1.png`, `vda-2.png`             |
+| Door Configurator | `door-1.png`, `door-2.png`           |
+| Project Tracker   | `tracker-1.png`, `tracker-2.png`     |
 
-Tips for a professional look: capture at 16:10 (e.g. 1600×1000), use a real-looking
-sample dataset, crop out browser chrome (the page adds its own frame), and blur any
-sensitive data.
+The first image is shown on the tool's launcher card and in its section; extra images
+become clickable thumbnails. Captions are set in the `TOOLS` config in `index.html`.
+
+For a polished look: capture at 16:10 (e.g. 1920×1200 at 100% zoom), crop out the
+browser bar (the page draws its own frame), use realistic sample data, and blur
+anything sensitive.
