@@ -4,59 +4,42 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Security Tools</title>
-<meta name="description" content="Security Tools: Blast Calculator, VDA-Tool, Door Configurator and Project Tracker. Made by James Norman.">
-<meta name="theme-color" content="#161b26">
+<meta name="description" content="Security Tools: engineering software for blast effects, vehicle dynamics, doorset specification and project delivery. Created by James Norman.">
+<meta name="theme-color" content="#000000">
+<meta name="color-scheme" content="dark">
 <meta property="og:title" content="Security Tools">
 <meta property="og:description" content="Blast Calculator, VDA-Tool, Door Configurator and Project Tracker.">
 <link rel="icon" type="image/svg+xml" href="icon.svg">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-  /* Visual language matches Project Tracker: dark sidebar, light panels,
-     Segoe UI, 10px radius, blue accent, follows the system dark mode. */
+  /* Pure black, monochrome, hairline rules: an instrument, not a brochure.
+     Layout follows Project Tracker (sidebar + panels). */
   :root {
-    --bg: #f5f6f8;
-    --panel: #ffffff;
-    --panel-2: #f9fafb;
-    --text: #1a1d23;
-    --muted: #646b78;
-    --border: #e3e6eb;
-    --grid: #eef0f3;
-    --accent: #2f5bd3;
-    --accent-soft: #e8eefc;
-    --accent-text: #ffffff;
-    --ok: #1e7b46;
-    --ok-soft: #e4f4ea;
-    --sidebar: #161b26;
-    --sidebar-text: #c8cedb;
-    --sidebar-active: #2a3243;
-    --sidebar-line: #2a3140;
-    --shadow: 0 1px 2px rgba(16,24,40,.05), 0 1px 3px rgba(16,24,40,.06);
-    --shadow-lg: 0 12px 32px -12px rgba(16,24,40,.22), 0 2px 6px rgba(16,24,40,.06);
-    --radius: 10px;
-    color-scheme: light;
-  }
-  @media (prefers-color-scheme: dark) {
-    :root:not([data-theme="light"]) {
-      --bg: #11141a; --panel: #191d25; --panel-2: #1f242e; --text: #e7e9ee; --muted: #9aa2b1;
-      --border: #2c323e; --grid: #232833; --accent: #7c9cff; --accent-soft: #232c48; --accent-text: #0e1220;
-      --ok: #5cc98a; --ok-soft: #173225; --sidebar: #0c0f14; --sidebar-active: #1d2330; --sidebar-line: #1f2530;
-      --shadow: none; --shadow-lg: 0 16px 40px -16px rgba(0,0,0,.6);
-      color-scheme: dark;
-    }
-  }
-  :root[data-theme="dark"] {
-    --bg: #11141a; --panel: #191d25; --panel-2: #1f242e; --text: #e7e9ee; --muted: #9aa2b1;
-    --border: #2c323e; --grid: #232833; --accent: #7c9cff; --accent-soft: #232c48; --accent-text: #0e1220;
-    --ok: #5cc98a; --ok-soft: #173225; --sidebar: #0c0f14; --sidebar-active: #1d2330; --sidebar-line: #1f2530;
-    --shadow: none; --shadow-lg: 0 16px 40px -16px rgba(0,0,0,.6);
+    --bg: #000000;
+    --panel: #0a0a0a;
+    --panel-2: #111111;
+    --line: #1c1c1c;
+    --line-2: #2a2a2a;
+    --line-3: #3a3a3a;
+    --text: #ededed;
+    --muted: #8c8c8c;
+    --faint: #5c5c5c;
+    --white: #ffffff;
+    --ok: #3ddc84;
+    --radius: 4px;
+    --mono: "IBM Plex Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+    --sans: "IBM Plex Sans", "Segoe UI", system-ui, -apple-system, Roboto, sans-serif;
+    /* drawn previews */
+    --ui-bg: #000; --ui-panel: #0b0b0b; --ui-line: #262626; --ui-text: #d9d9d9; --ui-dim: #6e6e6e;
     color-scheme: dark;
   }
-  /* mock-UI colours follow the page */
-  :root { --ui-bg: var(--bg); --ui-panel: var(--panel); --ui-line: var(--border); --ui-text: var(--text); --ui-dim: var(--muted); }
 
-  /* Scale: phone → 1080p → 1440p → 4K (100% scaling). Sizes are in rem. */
-  html { font-size: 15px; -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+  /* Scale: phone → 1080p → 1440p → 4K at 100%. Everything is sized in rem. */
+  html { font-size: 15px; -webkit-text-size-adjust: 100%; scroll-behavior: smooth; background: var(--bg); }
   @media (min-width: 1800px) { html { font-size: 16px; } }
   @media (min-width: 2400px) { html { font-size: 19px; } }
   @media (min-width: 3200px) { html { font-size: 23px; } }
@@ -65,181 +48,174 @@
   html, body { margin: 0; }
   body {
     background: var(--bg); color: var(--text);
-    font: 1rem/1.5 "Segoe UI", system-ui, -apple-system, Roboto, "Helvetica Neue", sans-serif;
+    font: 1rem/1.55 var(--sans);
     -webkit-font-smoothing: antialiased; overflow-x: hidden;
   }
-  a { color: var(--accent); text-decoration: none; }
+  a { color: inherit; text-decoration: none; }
   img, svg { display: block; max-width: 100%; }
-  h1 { font-size: 1.6rem; margin: 0 0 .15rem; font-weight: 650; letter-spacing: -.01em; }
-  h2 { font-size: 1.15rem; margin: 0; font-weight: 640; }
+  h1, h2 { margin: 0; font-weight: 600; letter-spacing: -.01em; }
   p { margin: 0 0 .7rem; }
-  .muted { color: var(--muted); }
+  .mono { font-family: var(--mono); }
+  .label { font-family: var(--mono); font-size: .72rem; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
 
   /* ── shell ─────────────────────────────────────────────── */
-  .shell { display: grid; grid-template-columns: 15rem minmax(0, 1fr); min-height: 100vh; }
+  .shell { display: grid; grid-template-columns: 15.5rem minmax(0, 1fr); min-height: 100vh; }
   .sidebar {
-    background: var(--sidebar); color: var(--sidebar-text);
+    background: var(--bg); border-right: 1px solid var(--line);
     display: flex; flex-direction: column; position: sticky; top: 0; height: 100vh;
-    padding: 1rem .7rem;
+    padding: 1.1rem .75rem; min-width: 0;
   }
-  .brand { display: flex; gap: .7rem; align-items: center; padding: .25rem .55rem 1.1rem; color: #fff; font-weight: 700; font-size: 1.05rem; text-decoration: none; }
-  .brand small { display: block; font-weight: 400; color: var(--sidebar-text); font-size: .8rem; }
-  .logo { display: inline-grid; place-items: center; width: 2rem; height: 2rem; border-radius: .55rem; background: #000; color: #fff; flex: none; box-shadow: inset 0 0 0 1px rgba(255,255,255,.28); }
-  .logo svg { width: 1.3rem; height: 1.3rem; }
-  .nav-label { font-size: .72rem; font-weight: 600; text-transform: uppercase; letter-spacing: .08em; opacity: .55; padding: .9rem .7rem .35rem; }
+  .brand { display: flex; gap: .7rem; align-items: center; padding: .2rem .5rem 1.2rem; color: var(--white); font-weight: 600; font-size: 1.02rem; }
+  .brand small { display: block; font-family: var(--mono); font-weight: 400; color: var(--faint); font-size: .7rem; letter-spacing: .04em; margin-top: .1rem; }
+  .logo { width: 2.1rem; height: 2.1rem; flex: none; border-radius: var(--radius); box-shadow: 0 0 0 1px var(--line-3); }
+  .nav-label { padding: 1rem .6rem .45rem; }
   .sidebar ul { list-style: none; padding: 0; margin: 0; }
   .sidebar li a {
-    display: flex; align-items: center; gap: .7rem; padding: .55rem .7rem; border-radius: .5rem;
-    color: var(--sidebar-text); margin-bottom: 1px; font-size: .95rem;
+    display: flex; align-items: center; gap: .7rem; padding: .5rem .6rem; border-radius: var(--radius);
+    color: var(--muted); margin-bottom: 2px; font-size: .93rem; border: 1px solid transparent;
   }
-  .sidebar li a:hover { background: var(--sidebar-active); }
-  .sidebar li a.active { background: var(--sidebar-active); color: #fff; font-weight: 600; }
-  .nav-dot { width: 1.15rem; height: 1.15rem; border-radius: .3rem; display: grid; place-items: center; flex: none; background: var(--c); color: #fff; }
-  .nav-dot svg { width: .75rem; height: .75rem; }
-  .nav-ext { margin-left: auto; opacity: 0; width: .8rem; height: .8rem; }
-  .sidebar li a:hover .nav-ext { opacity: .7; }
-  .sidebar-foot { margin-top: auto; border-top: 1px solid var(--sidebar-line); padding: .8rem .7rem 0; display: grid; gap: .5rem; font-size: .8rem; }
-  .status { display: flex; align-items: center; gap: .5rem; }
-  .status .dot { width: .5rem; height: .5rem; border-radius: 50%; background: #4fc97f; }
-  .theme-btn { font: inherit; font-size: .8rem; background: transparent; color: var(--sidebar-text); border: 1px solid var(--sidebar-line); border-radius: .45rem; padding: .35rem .6rem; cursor: pointer; text-align: left; display: flex; gap: .5rem; align-items: center; }
-  .theme-btn:hover { background: var(--sidebar-active); }
-  .theme-btn svg { width: .9rem; height: .9rem; }
-  .credit { opacity: .6; }
+  .sidebar li a:hover { color: var(--text); background: var(--panel-2); }
+  .sidebar li a.active { color: var(--white); background: var(--panel-2); border-color: var(--line-2); }
+  .nav-ico { width: 1.25rem; height: 1.25rem; flex: none; border-radius: 3px; box-shadow: 0 0 0 1px var(--line-2); }
+  .nav-ico.grid { display: grid; place-items: center; box-shadow: none; color: currentColor; }
+  .nav-ico.grid svg { width: 1rem; height: 1rem; }
+  .nav-id { margin-left: auto; font-family: var(--mono); font-size: .7rem; color: var(--faint); }
+  .sidebar-foot { margin-top: auto; border-top: 1px solid var(--line); padding: .9rem .6rem 0; display: grid; gap: .45rem; font-family: var(--mono); font-size: .72rem; color: var(--faint); }
+  .status { display: flex; align-items: center; gap: .5rem; color: var(--muted); }
+  .status .dot { width: .45rem; height: .45rem; border-radius: 50%; background: var(--ok); box-shadow: 0 0 .5rem var(--ok); }
 
   .content { min-width: 0; }
-  .page { padding: 1.75rem 2rem 3rem; max-width: 120rem; margin: 0 auto; }
+  .page { padding: 2rem 2.25rem 3rem; max-width: 120rem; margin: 0 auto; }
 
-  /* ── page head ─────────────────────────────────────────── */
-  .page-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 1rem; flex-wrap: wrap; margin-bottom: 1.4rem; }
-  .page-head p { margin: .2rem 0 0; color: var(--muted); max-width: 46rem; }
-  .pill { display: inline-flex; align-items: center; gap: .45rem; font-size: .8rem; font-weight: 600; color: var(--ok); background: var(--ok-soft); border-radius: 999px; padding: .3rem .75rem; white-space: nowrap; }
-  .pill .dot { width: .45rem; height: .45rem; border-radius: 50%; background: currentColor; }
+  /* ── header ────────────────────────────────────────────── */
+  .masthead { display: grid; gap: 1.5rem; padding-bottom: 1.6rem; margin-bottom: 1.8rem; border-bottom: 1px solid var(--line); }
+  @media (min-width: 1100px) { .masthead { grid-template-columns: minmax(0, 1fr) auto; align-items: end; } }
+  .masthead h1 { font-size: 2.1rem; line-height: 1.1; color: var(--white); margin: .5rem 0 .6rem; }
+  .masthead p { color: var(--muted); max-width: 44rem; margin: 0; }
+  .spec { display: grid; grid-template-columns: repeat(3, auto); gap: 0; border: 1px solid var(--line-2); border-radius: var(--radius); }
+  .spec div { padding: .6rem 1rem; border-left: 1px solid var(--line-2); }
+  .spec div:first-child { border-left: 0; }
+  .spec b { display: block; font-family: var(--mono); font-weight: 500; font-size: 1.15rem; color: var(--white); }
+  .spec span { font-family: var(--mono); font-size: .68rem; letter-spacing: .06em; text-transform: uppercase; color: var(--faint); }
 
   /* ── buttons ───────────────────────────────────────────── */
   .button {
-    font: inherit; font-size: .93rem; display: inline-flex; align-items: center; justify-content: center; gap: .45rem;
-    padding: .55rem 1rem; border-radius: .5rem; border: 1px solid var(--border); background: var(--panel);
-    color: var(--text); cursor: pointer; white-space: nowrap; text-decoration: none; font-weight: 600;
-    transition: border-color .15s, background .15s, transform .15s;
+    font: 500 .88rem/1 var(--sans); display: inline-flex; align-items: center; justify-content: center; gap: .5rem;
+    padding: .65rem 1rem; border-radius: var(--radius); border: 1px solid var(--line-3); background: transparent;
+    color: var(--text); cursor: pointer; white-space: nowrap; transition: background .15s, border-color .15s, color .15s;
   }
-  .button:hover { border-color: var(--muted); }
-  .button.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-text); }
-  .button.primary:hover { filter: brightness(1.08); }
-  .button[aria-disabled="true"] { color: var(--muted); background: var(--panel-2); cursor: not-allowed; }
-  .button svg { width: .95rem; height: .95rem; }
-  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .button:hover { border-color: var(--muted); color: var(--white); }
+  .button.primary { background: var(--white); border-color: var(--white); color: #000; }
+  .button.primary:hover { background: #d6d6d6; border-color: #d6d6d6; }
+  .button[aria-disabled="true"] { color: var(--faint); border-color: var(--line-2); cursor: not-allowed; }
+  .button svg { width: .9rem; height: .9rem; }
+  :focus-visible { outline: 1px solid var(--white); outline-offset: 2px; }
 
   /* ── launcher ──────────────────────────────────────────── */
-  .section-label { font-size: .78rem; font-weight: 650; color: var(--muted); text-transform: uppercase; letter-spacing: .07em; margin: 0 0 .7rem; }
-  .launcher { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fill, minmax(min(100%, 17rem), 1fr)); margin-bottom: 2.4rem; }
+  .section-head { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; margin: 0 0 .8rem; }
+  .launcher { display: grid; gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 17rem), 1fr)); margin-bottom: 2.6rem; }
   @media (min-width: 1300px) { .launcher { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
-  .app {
-    position: relative; display: flex; flex-direction: column; background: var(--panel);
-    border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow);
-    overflow: hidden; color: var(--text); text-decoration: none;
-    transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
-  }
-  .app:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); border-color: color-mix(in srgb, var(--c) 55%, var(--border)); }
-  .app-thumb { position: relative; aspect-ratio: 16 / 10; background: var(--panel-2); border-bottom: 1px solid var(--border); overflow: hidden; }
-  .app-thumb .mock, .app-thumb img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: top left; }
-  .app-thumb::after { content: ""; position: absolute; inset: auto 0 0 0; height: 3px; background: var(--c); }
-  .app-body { padding: 1rem 1.1rem 1.1rem; display: flex; flex-direction: column; gap: .35rem; flex: 1; }
-  .app-name { display: flex; align-items: center; gap: .6rem; font-weight: 650; font-size: 1.08rem; }
-  .app-icon { width: 1.9rem; height: 1.9rem; border-radius: .5rem; display: grid; place-items: center; background: var(--c); color: #fff; flex: none; }
-  .app-icon svg { width: 1.05rem; height: 1.05rem; }
+  .app { position: relative; display: flex; flex-direction: column; background: var(--bg); transition: background .2s; }
+  .app:hover { background: var(--panel); }
+  .app-thumb { position: relative; aspect-ratio: 16 / 10; background: var(--bg); border-bottom: 1px solid var(--line); overflow: hidden; }
+  .app-thumb .mock, .app-thumb img.shot { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: top left; }
+  .app-body { padding: 1rem 1.1rem 1.1rem; display: flex; flex-direction: column; gap: .45rem; flex: 1; }
+  .app-top { display: flex; align-items: center; gap: .75rem; }
+  .app-icon { width: 2.4rem; height: 2.4rem; flex: none; border-radius: var(--radius); box-shadow: 0 0 0 1px var(--line-3); }
+  .app-name { font-weight: 600; font-size: 1.05rem; color: var(--white); line-height: 1.2; }
+  .app-id { font-family: var(--mono); font-size: .7rem; color: var(--faint); letter-spacing: .04em; }
   .app-sub { color: var(--muted); font-size: .9rem; flex: 1; }
-  .app-foot { display: flex; align-items: center; justify-content: space-between; gap: .5rem; margin-top: .6rem; }
-  .app-open { display: inline-flex; align-items: center; gap: .4rem; font-weight: 650; font-size: .9rem; color: var(--c); }
-  .app-open svg { width: .9rem; height: .9rem; transition: transform .2s; }
+  .app-foot { display: flex; align-items: center; justify-content: space-between; gap: .5rem; margin-top: .5rem; padding-top: .7rem; border-top: 1px solid var(--line); }
+  .app-open { display: inline-flex; align-items: center; gap: .45rem; font-family: var(--mono); font-size: .78rem; letter-spacing: .06em; text-transform: uppercase; color: var(--white); }
+  .app-open svg { width: .85rem; height: .85rem; transition: transform .2s; }
   .app:hover .app-open svg { transform: translate(2px, -2px); }
-  .app-details { font-size: .85rem; color: var(--muted); position: relative; z-index: 2; padding: .2rem .1rem; }
+  .app-open.off { color: var(--faint); }
+  .app-details { font-family: var(--mono); font-size: .72rem; letter-spacing: .06em; text-transform: uppercase; color: var(--faint); position: relative; z-index: 2; }
   .app-details:hover { color: var(--text); }
-  .app-tag { font-size: .72rem; font-weight: 650; color: var(--muted); background: var(--panel-2); border: 1px solid var(--border); border-radius: 999px; padding: .1rem .55rem; margin-left: auto; white-space: nowrap; }
-  /* Whole card is the link to the app */
-  .app-link::after { content: ""; position: absolute; inset: 0; z-index: 1; }
+  .app-link::after { content: ""; position: absolute; inset: 0; z-index: 1; } /* whole card opens the app */
 
-  /* ── tool detail cards ─────────────────────────────────── */
-  .tool {
-    background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius);
-    box-shadow: var(--shadow); margin-bottom: 1.25rem; overflow: hidden; scroll-margin-top: 1rem;
-  }
-  .tool-head {
-    display: flex; align-items: center; gap: .85rem; padding: 1rem 1.25rem; border-bottom: 1px solid var(--border);
-    background: linear-gradient(90deg, color-mix(in srgb, var(--c) 9%, var(--panel)), var(--panel) 60%);
-  }
-  .tool-head .app-icon { width: 2.3rem; height: 2.3rem; border-radius: .6rem; }
-  .tool-head .app-icon svg { width: 1.25rem; height: 1.25rem; }
-  .tool-head h2 { font-size: 1.25rem; }
-  .tool-head .kicker { font-size: .82rem; color: var(--muted); }
+  /* ── tool sections ─────────────────────────────────────── */
+  .tool { border: 1px solid var(--line); border-radius: var(--radius); margin-bottom: 1.5rem; scroll-margin-top: 1rem; background: var(--bg); }
+  .tool-head { display: flex; align-items: center; gap: .9rem; padding: 1rem 1.25rem; border-bottom: 1px solid var(--line); }
+  .tool-head .app-icon { width: 2.6rem; height: 2.6rem; }
+  .tool-head h2 { font-size: 1.3rem; color: var(--white); line-height: 1.2; }
+  .tool-head .kicker { font-family: var(--mono); font-size: .72rem; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); margin-top: .15rem; }
   .tool-head .button { margin-left: auto; }
-  .tool-body { display: grid; gap: 1.5rem; padding: 1.4rem 1.25rem 1.5rem; }
+  .tool-body { display: grid; gap: 1.6rem; padding: 1.4rem 1.25rem 1.5rem; }
   .tool-body > * { min-width: 0; }
-  @media (min-width: 1100px) { .tool-body { grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: 2rem; padding: 1.5rem; } }
-  .tagline { font-size: 1.1rem; font-weight: 600; margin: 0 0 .5rem; }
-  .desc { color: var(--muted); margin: 0 0 1.1rem; }
-  .stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .6rem; margin-bottom: 1.2rem; }
-  .stat { background: var(--panel-2); border: 1px solid var(--border); border-radius: .55rem; padding: .7rem .8rem; }
-  .stat-value { font-size: 1.2rem; font-weight: 680; letter-spacing: -.01em; line-height: 1.2; color: var(--c); }
-  .stat-sub { font-size: .78rem; color: var(--muted); line-height: 1.3; margin-top: .15rem; }
-  .features { list-style: none; padding: 0; margin: 0 0 1.25rem; display: grid; gap: .75rem; }
-  @media (min-width: 1500px) { .features { grid-template-columns: 1fr 1fr; gap: .9rem 1.4rem; } }
-  .features li { display: flex; gap: .65rem; align-items: flex-start; }
-  .check { flex: none; width: 1.25rem; height: 1.25rem; border-radius: .35rem; margin-top: .12rem; display: grid; place-items: center; background: color-mix(in srgb, var(--c) 15%, transparent); color: var(--c); }
-  .check svg { width: .75rem; height: .75rem; }
-  .features b { display: block; font-weight: 620; }
+  @media (min-width: 1100px) { .tool-body { grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 2.25rem; padding: 1.6rem; } }
+  .tagline { font-size: 1.15rem; font-weight: 500; color: var(--white); margin: 0 0 .55rem; }
+  .desc { color: var(--muted); margin: 0 0 1.2rem; }
+  .stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border: 1px solid var(--line-2); border-radius: var(--radius); margin-bottom: 1.3rem; }
+  .stat { padding: .7rem .85rem; border-left: 1px solid var(--line-2); }
+  .stat:first-child { border-left: 0; }
+  .stat-value { font-family: var(--mono); font-size: 1.15rem; font-weight: 500; color: var(--white); line-height: 1.25; }
+  .stat-sub { font-size: .76rem; color: var(--muted); line-height: 1.35; margin-top: .2rem; }
+  .features { list-style: none; padding: 0; margin: 0 0 1.3rem; display: grid; gap: 0; border-top: 1px solid var(--line); }
+  .features li { display: grid; grid-template-columns: 2.2rem minmax(0, 1fr); gap: .3rem; padding: .7rem 0; border-bottom: 1px solid var(--line); }
+  .features .n { font-family: var(--mono); font-size: .75rem; color: var(--faint); padding-top: .15rem; }
+  .features b { display: block; font-weight: 600; color: var(--text); }
   .features span { color: var(--muted); font-size: .9rem; }
+  .refs { display: flex; flex-wrap: wrap; gap: .4rem; margin: 0 0 1.3rem; }
+  .refs .label { width: 100%; margin-bottom: .1rem; }
+  .ref { font-family: var(--mono); font-size: .74rem; color: var(--text); border: 1px solid var(--line-2); border-radius: 3px; padding: .15rem .5rem; background: var(--panel); }
+  .button.restricted { color: var(--text); border-color: var(--line-3); border-style: dashed; cursor: default; }
+  .restricted-note { display: flex; gap: .7rem; align-items: flex-start; margin-top: 1rem; padding: .8rem .9rem; border: 1px solid var(--line-2); border-left: 2px solid var(--white); border-radius: var(--radius); background: var(--panel); }
+  .restricted-note svg { width: 1rem; height: 1rem; flex: none; margin-top: .15rem; color: var(--white); }
+  .restricted-note b { display: block; font-family: var(--mono); font-weight: 500; font-size: .72rem; letter-spacing: .08em; text-transform: uppercase; color: var(--white); margin-bottom: .2rem; }
+  .restricted-note span { font-size: .88rem; color: var(--muted); }
   .actions { display: flex; flex-wrap: wrap; gap: .6rem; align-items: center; }
-  .note { display: flex; gap: .5rem; align-items: flex-start; font-size: .84rem; color: var(--muted); margin-top: .9rem; }
-  .note svg { width: .95rem; height: .95rem; flex: none; margin-top: .15rem; }
+  .note { display: flex; gap: .5rem; align-items: flex-start; font-size: .82rem; color: var(--faint); margin-top: .9rem; }
+  .note svg { width: .9rem; height: .9rem; flex: none; margin-top: .2rem; }
 
   /* screenshot frame */
-  .frame { border: 1px solid var(--border); border-radius: .6rem; overflow: hidden; background: var(--bg); box-shadow: var(--shadow-lg); }
-  .frame-bar { display: flex; align-items: center; gap: .4rem; padding: .5rem .7rem; border-bottom: 1px solid var(--border); background: var(--panel-2); }
-  .frame-bar i { width: .6rem; height: .6rem; border-radius: 50%; background: var(--border); }
-  .frame-url { margin: 0 auto; font-size: .74rem; color: var(--muted); background: var(--panel); border: 1px solid var(--border); border-radius: .35rem; padding: .1rem .7rem; max-width: 70%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .frame { border: 1px solid var(--line-2); border-radius: var(--radius); overflow: hidden; background: var(--bg); }
+  .frame-bar { display: flex; align-items: center; gap: .6rem; padding: .45rem .7rem; border-bottom: 1px solid var(--line-2); background: var(--panel); }
+  .frame-bar i { width: .5rem; height: .5rem; border-radius: 50%; background: var(--line-3); }
+  .frame-url { margin: 0 auto; font-family: var(--mono); font-size: .7rem; color: var(--muted); max-width: 75%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .shot-main { display: block; width: 100%; padding: 0; border: 0; background: var(--bg); aspect-ratio: 16 / 10; position: relative; overflow: hidden; cursor: default; }
   .shot-main.has-img { cursor: zoom-in; }
   .shot-main .mock, .shot-main img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: top left; }
-  .illus { position: absolute; right: .5rem; bottom: .5rem; z-index: 1; font-size: .68rem; font-weight: 600; color: var(--muted); background: color-mix(in srgb, var(--panel) 85%, transparent); border: 1px solid var(--border); border-radius: 999px; padding: .05rem .5rem; pointer-events: none; }
-  .mock text { font-family: "Segoe UI", system-ui, sans-serif; }
+  .mock { filter: grayscale(1) contrast(1.05); }
+  .mock text { font-family: var(--sans); }
+  .illus { position: absolute; right: .5rem; bottom: .5rem; z-index: 1; font-family: var(--mono); font-size: .62rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); background: #000; border: 1px solid var(--line-2); border-radius: 3px; padding: .05rem .4rem; pointer-events: none; }
+  .fig { display: flex; justify-content: space-between; gap: 1rem; margin-top: .55rem; font-family: var(--mono); font-size: .72rem; color: var(--faint); }
   .thumbs { display: flex; gap: .5rem; margin-top: .7rem; overflow-x: auto; padding: 2px; }
-  .thumb { flex: 0 0 auto; width: 5.5rem; aspect-ratio: 16/10; border-radius: .4rem; overflow: hidden; padding: 0; border: 2px solid var(--border); background: var(--panel-2); cursor: pointer; opacity: .65; }
+  .thumb { flex: 0 0 auto; width: 5.5rem; aspect-ratio: 16/10; border-radius: 3px; overflow: hidden; padding: 0; border: 1px solid var(--line-2); background: var(--panel); cursor: pointer; opacity: .55; }
   .thumb img { width: 100%; height: 100%; object-fit: cover; }
-  .thumb[aria-current="true"], .thumb:hover { opacity: 1; border-color: var(--c); }
-  .caption { margin-top: .5rem; font-size: .82rem; color: var(--muted); }
+  .thumb[aria-current="true"], .thumb:hover { opacity: 1; border-color: var(--muted); }
 
-  footer.page-foot { color: var(--muted); font-size: .84rem; padding-top: 1rem; border-top: 1px solid var(--border); display: flex; flex-wrap: wrap; justify-content: space-between; gap: .5rem; }
+  footer.page-foot { color: var(--faint); font-family: var(--mono); font-size: .72rem; padding-top: 1.1rem; border-top: 1px solid var(--line); display: flex; flex-wrap: wrap; justify-content: space-between; gap: .5rem; }
 
   /* lightbox */
-  .lightbox { position: fixed; inset: 0; z-index: 100; display: none; place-items: center; padding: 16px; background: rgba(8,10,15,.88); }
+  .lightbox { position: fixed; inset: 0; z-index: 100; display: none; place-items: center; padding: 16px; background: rgba(0,0,0,.94); }
   .lightbox.open { display: grid; }
-  .lightbox img { max-width: min(120rem, 100%); max-height: 86vh; border-radius: .5rem; }
-  .lightbox p { color: #c9cfdb; text-align: center; margin: .8rem 0 0; font-size: .9rem; }
-  .lb-close { position: absolute; top: 1rem; right: 1rem; width: 2.5rem; height: 2.5rem; border-radius: .5rem; border: 1px solid rgba(255,255,255,.25); background: rgba(255,255,255,.08); color: #fff; font-size: 1.3rem; cursor: pointer; }
+  .lightbox img { max-width: min(120rem, 100%); max-height: 86vh; border: 1px solid var(--line-2); }
+  .lightbox p { color: var(--muted); text-align: center; margin: .8rem 0 0; font-family: var(--mono); font-size: .75rem; }
+  .lb-close { position: absolute; top: 1rem; right: 1rem; width: 2.4rem; height: 2.4rem; border-radius: var(--radius); border: 1px solid var(--line-3); background: #000; color: #fff; font-size: 1.2rem; cursor: pointer; }
 
-  /* ── phone / narrow: sidebar becomes a top bar, everything full width ── */
+  /* ── phone / narrow: sidebar becomes a top bar ─────────── */
   @media (max-width: 900px) {
     .shell { grid-template-columns: minmax(0, 1fr); }
-    .sidebar { min-width: 0; }
-    .navs { display: flex; gap: .3rem; overflow-x: auto; scrollbar-width: none; margin: 0 -16px; padding: 0 16px; }
+    .sidebar { position: sticky; top: 0; z-index: 20; height: auto; padding: .6rem 16px .6rem; border-right: 0; border-bottom: 1px solid var(--line); }
+    .brand { padding: .15rem 0 .6rem; }
+    .brand small, .nav-label, .sidebar-foot, .nav-id { display: none; }
+    .navs { display: flex; gap: .35rem; overflow-x: auto; scrollbar-width: none; margin: 0 -16px; padding: 0 16px; }
     .navs::-webkit-scrollbar { display: none; }
-    .sidebar { position: sticky; top: 0; z-index: 20; height: auto; padding: .6rem 16px .55rem; }
-    .brand { padding: .2rem 0 .55rem; }
-    .brand small, .nav-label, .sidebar-foot .status, .credit { display: none; }
-    .sidebar ul { display: flex; gap: .3rem; flex: none; }
-    .sidebar li a { white-space: nowrap; padding: .4rem .65rem; font-size: .88rem; background: var(--sidebar-active); }
-    .sidebar-foot { position: absolute; top: .6rem; right: 16px; border: 0; padding: 0; margin: 0; }
-    .theme-btn span { display: none; }
-    .page { padding: 1.1rem 16px 2rem; }
-    .tool { scroll-margin-top: 7.5rem; }
+    .sidebar ul { display: flex; gap: .35rem; flex: none; }
+    .sidebar li a { white-space: nowrap; padding: .35rem .6rem; font-size: .86rem; border-color: var(--line-2); margin: 0; }
+    .page { padding: 1.2rem 16px 2rem; }
+    .masthead h1 { font-size: 1.7rem; }
+    .spec { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .spec div { padding: .5rem .6rem; }
+    .tool { scroll-margin-top: 7rem; }
     .tool-head { flex-wrap: wrap; padding: .9rem 1rem; }
     .tool-head .button { margin-left: 0; width: 100%; }
     .tool-body { padding: 1rem; }
-    .stats { gap: .4rem; }
     .stat { padding: .55rem .6rem; }
-    .stat-value { font-size: 1.05rem; }
+    .stat-value { font-size: 1rem; }
   }
-  @media (max-width: 420px) { .app-tag { display: none; } }
 
   @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } * { transition: none !important; } }
   @media print { .sidebar, .lightbox, .button { display: none !important; } .shell { display: block; } .tool { break-inside: avoid; } }
@@ -249,43 +225,41 @@
 <div class="shell">
   <aside class="sidebar">
     <a class="brand" href="#top">
-      <span class="logo"><svg viewBox="5 6 22 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12.5 11.5V9a1.5 1.5 0 0 1 1.5-1.5h4A1.5 1.5 0 0 1 19.5 9v2.5"/><rect x="5.5" y="11.5" width="21" height="13.5" rx="2"/><path d="M5.5 17.5h21"/><rect x="14" y="15.5" width="4" height="4" rx=".8" fill="#000"/></svg></span>
-      <span>Security Tools<small>Made by James Norman</small></span>
+      <img class="logo" src="icon.svg" alt="">
+      <span>Security Tools<small>v1 · J. Norman</small></span>
     </a>
     <nav class="navs" aria-label="Tools">
-    <div class="nav-label">Overview</div>
-    <ul id="nav-main"><li><a href="#top" class="active" data-spy="top"><span class="nav-dot" style="--c:#2f5bd3"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z"/></svg></span>All tools</a></li></ul>
-    <div class="nav-label">Tools</div>
-    <ul id="nav-tools"></ul>
+      <div class="nav-label label">Index</div>
+      <ul><li><a href="#top" class="active" data-spy="top"><span class="nav-ico grid"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z"/></svg></span>All tools</a></li></ul>
+      <div class="nav-label label">Tools</div>
+      <ul id="nav-tools"></ul>
     </nav>
     <div class="sidebar-foot">
       <div class="status"><span class="dot"></span><span id="status-text"></span></div>
-      <button class="theme-btn" id="theme-btn" type="button" aria-label="Switch light or dark theme">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 3a9 9 0 1 0 9 9 7 7 0 0 1-9-9Z"/></svg><span>Light / dark</span>
-      </button>
-      <span class="credit">Created by James Norman</span>
+      <span>Created by James Norman</span>
     </div>
   </aside>
 
   <main class="content">
     <div class="page" id="top">
-      <div class="page-head">
+      <header class="masthead">
         <div>
+          <div class="label">Security engineering · Software suite</div>
           <h1>Security Tools</h1>
-          <p>Purpose-built tools for blast assessment, hostile vehicle mitigation, doorset specification and project delivery. Pick a tool to open it, or read on for what each one does.</p>
+          <p>A set of engineering tools for blast effects, vehicle dynamics, doorset specification and project delivery. Each one is built on published standards and checked against reference data. Select a tool to open it.</p>
         </div>
-        <span class="pill"><span class="dot"></span><span id="count-pill"></span></span>
-      </div>
+        <div class="spec" id="spec"></div>
+      </header>
 
-      <div class="section-label">Open a tool</div>
+      <div class="section-head"><span class="label">Open a tool</span><span class="label" style="color:var(--faint)">Click a card to launch</span></div>
       <div class="launcher" id="launcher"></div>
 
-      <div class="section-label">About the tools</div>
+      <div class="section-head"><span class="label">Tool reference</span></div>
       <div id="tools"></div>
 
       <footer class="page-foot">
         <span id="foot-left"></span>
-        <span>Access is limited to approved users. Ask for access if you're new to the team.</span>
+        <span>Access limited to approved users</span>
       </footer>
     </div>
   </main>
@@ -300,30 +274,29 @@
 /* =========================================================================
    EDITABLE CONTENT
    • url:          where "Open" goes. Leave "" to show "Link coming soon".
-   • screenshots:  image files in  screenshots/  next to this page. Until a
-                   file exists, a drawn preview of the tool is shown, so the
-                   page never looks broken. The first image is the main one;
-                   any others become clickable thumbnails.
+   • icon:         the tool's own app icon (icons/apps/).
+   • screenshots:  image files in  screenshots/. Until a file exists, a drawn
+                   preview is shown (marked "Illustration"). The first image
+                   is the main one; others become clickable thumbnails.
    ========================================================================= */
 const TOOLS = [
   {
-    id: "blast",
+    id: "blast", code: "T-01",
     name: "Blast Calculator",
     short: "Airblast effects on buildings and people.",
     kicker: "Blast effects",
-    icon: "bolt",
+    icon: "icons/apps/blast.svg",
     mock: "blast",
-    colors: ["#e5484d", "#f76b15"],
-    tag: "Web app",
     tagline: "From charge size to consequences, in seconds.",
-    description: "Enter an explosive, a charge weight and a stand-off distance to see the effect on buildings and people. It uses the Kingery-Bulmash airblast model from IATG 01.80 and the UN SaferGuard calculator, and it has been checked against the published reference tables.",
-    stats: [["4", "scenarios side by side"], ["3", "injury models compared"], ["≈1%", "agreement with Swisdak"]],
+    description: "Enter an explosive, a charge weight and a stand-off distance to see the effect on buildings and people. It uses the Kingery-Bulmash airblast model for a hemispherical surface burst, as set out in IATG 01.80, and it has been checked against the published reference tables.",
+    stats: [["4", "scenarios side by side"], ["3", "injury models compared"], ["≈1%", "agreement with Swisdak (1994)"]],
     features: [
       ["Building and casualty assessment", "IATG brick-house damage, window breakage and structural fragility curves. TNO, Eisenberg and UFC 3-340-02 injury models shown side by side."],
       ["Explosive library", "Military, commercial and homemade explosives, with editable TNT-equivalence factors for pressure and impulse."],
-      ["Range and stand-off tables", "The distance at which each damage or injury threshold is reached, a hazard-zone map and an overpressure chart. Export to CSV or print."],
-      ["Validated", "Reproduces IATG 01.80 Table 5 and the Table 53 lung-lethality example."],
+      ["Range and stand-off tables", "The distance at which each damage or injury threshold is reached, a hazard-zone map and a log–log overpressure chart. Export to CSV or print."],
+      ["Validated", "Reproduces IATG 01.80 Table 5 (1, 10 and 100 t at 50 m) and the Table 53 TNO lung-lethality example."],
     ],
+    refs: ["IATG 01.80", "Kingery-Bulmash", "UFC 3-340-02", "FEMA 426", "AASTP-1", "TNO"],
     url: "https://blast-tool-one.vercel.app",
     note: "Sign-in required. Access is limited to approved users.",
     screenshots: [
@@ -332,23 +305,22 @@ const TOOLS = [
     ],
   },
   {
-    id: "vda",
+    id: "vda", code: "T-02",
     name: "VDA-Tool",
-    short: "Vehicle dynamics assessment for HVM.",
+    short: "Vehicle dynamics assessment for hostile vehicle mitigation.",
     kicker: "Hostile vehicle mitigation",
-    icon: "car",
+    icon: "icons/apps/vda.svg",
     mock: "vda",
-    colors: ["#2f5bd3", "#6e56cf"],
-    tag: "Web app",
-    tagline: "How fast could a hostile vehicle reach your asset?",
-    description: "A vehicle dynamics assessment for hostile vehicle mitigation. Draw the approach routes on a map or a site plan, and it works out the top speed six vehicle classes could reach at the line of protection. It produces a route sketch, a speed-versus-distance chart and a report.",
-    stats: [["6", "vehicle classes"], ["Auto", "attack-vector search"], ["PDF + Word", "report output"]],
+    tagline: "How fast could a hostile vehicle reach the asset?",
+    description: "A vehicle dynamics assessment for hostile vehicle mitigation. Define the approach routes on a map or a scaled site plan, and it works out the maximum speed six vehicle classes could reach at the line of protection. It produces a route sketch, a speed-versus-distance chart and a report.",
+    stats: [["6", "vehicle classes"], ["Auto", "attack-vector search"], ["PDF · DOCX", "report output"]],
     features: [
       ["Map-based assessment", "Use OpenStreetMap or your own site plan, scaled by two points. Draw the asset, the line of protection and the attack vectors."],
       ["Automatic attack vectors", "Searches along roads, across open ground and around building corners, with bend radii limited by obstacles."],
       ["Protection requirements", "Splits the line of protection into lettered sections and shows the required protection and a draft rating for each."],
       ["Report-ready", "Exports to PDF and to Word using your house template. Every table and chart has a copy-for-report button."],
     ],
+    refs: ["NPSA HOVVA (verified against)", "OpenStreetMap"],
     url: "https://vda-tool.vercel.app",
     note: "Sign-in required. Uses the same accounts as the Blast Calculator.",
     screenshots: [
@@ -357,23 +329,22 @@ const TOOLS = [
     ],
   },
   {
-    id: "door",
+    id: "door", code: "T-03",
     name: "Door Configurator",
-    short: "Compliant, evidenced doorset selection.",
+    short: "Compliant doorset selection, backed by test evidence.",
     kicker: "Doorset specification",
-    icon: "door",
+    icon: "icons/apps/door.svg",
     mock: "door",
-    colors: ["#12a594", "#2f5bd3"],
-    tag: "Web app",
     tagline: "Compliant doorsets, backed by test evidence.",
     description: "A guided wizard for configuring a compliant doorset: configuration, locking set, fire rating, attack rating, escape-route requirements, operation and furniture. It returns only the combinations of locking hardware, door construction and power supply that are compatible and backed by test evidence.",
-    stats: [["7", "guided wizard steps"], ["LPCB", "and fire certificates"], ["Verified", "maintained data"]],
+    stats: [["7", "guided wizard steps"], ["LPCB", "and fire certificates"], ["Verified", "maintained reference data"]],
     features: [
       ["Guided, step by step", "Every step can be skipped, so you can start from whatever you already know."],
       ["Evidence first", "Only compatible combinations backed by fire certificates, LPCB Red Book listings and manufacturer declarations."],
       ["Lock fail mode", "Fail-safe, fail-secure or installer-selectable, checked against escape-route and fire requirements."],
       ["Curated reference data", "Standards, ratings, products and certifications. New entries stay unverified until a data maintainer confirms them."],
     ],
+    refs: ["LPCB Red Book", "LPS 1175", "Fire certification", "Manufacturer DoPs"],
     url: "https://door-configurator-beta.vercel.app",
     note: "Sign in with Google. Access is limited to approved users.",
     screenshots: [
@@ -382,182 +353,165 @@ const TOOLS = [
     ],
   },
   {
-    id: "tracker",
+    id: "tracker", code: "T-04",
     name: "Project Tracker",
-    short: "Time, projects, Gantt and proposals.",
-    kicker: "Delivery · OneDrive",
-    icon: "gantt",
+    short: "Time, projects, Gantt charts and proposals.",
+    kicker: "Project delivery · Secure",
+    icon: "icons/apps/tracker.svg",
     mock: "tracker",
-    colors: ["#d08a12", "#e5484d"],
-    tag: "OneDrive",
-    openLabel: "Open in OneDrive",
     tagline: "Time, projects, Gantt charts and proposals in one file.",
-    description: "A single file that runs from the team's OneDrive or Teams folder. There's no server and nothing to install, and it can't connect to the internet, so all team data stays in the team folder.",
-    stats: [["1", "file, no install"], ["0", "servers"], ["Offline", "by design"]],
+    description: "A secure, invite-only app for the team's time, projects, Gantt charts and proposals. All company data is encrypted and stored on the company's own servers in the team's shared folder. Nothing is held online, and the app can't connect to the internet.",
+    stats: [["Invite", "access by admin invitation"], ["0", "internet connections"], ["AES-256", "encrypted records"]],
     features: [
       ["Timesheets and hours", "Record time, import hours and track utilisation across the team."],
       ["Projects and Gantt", "Project setup, progress, earned value, fee adjustments and a team board."],
-      ["Proposals and pipeline", "Track bids from proposal to award, with pipeline reports you can export to Word."],
-      ["Private by design", "Data stays in the team folder. Admin roles and a recovery code protect pay rates and settings."],
+      ["Proposals and pipeline", "Track bids from enquiry to award, with pipeline reports you can export to Word and Excel."],
+      ["Private by design", "Data stays in the team folder, encrypted, with no network access. Admin roles and a recovery code protect pay rates and settings."],
     ],
-    // Paste the OneDrive / Teams share link to the team folder here.
+    refs: ["Invite only", "AES-256-GCM", "No internet access"],
     url: "",
-    copyable: true,
-    note: "Opens from the team's OneDrive folder in Edge or Chrome. It's a working aid, not the system of record.",
+    // No public link: shown instead of an Open button.
+    restricted: "Invite only",
+    restrictedNote: "No link is available because this is a secure app. All company data is stored securely on the company server, and access is by invitation only. Ask an admin for an invite.",
     screenshots: [
       { src: "screenshots/tracker-1.png", caption: "Gantt view" },
       { src: "screenshots/tracker-2.png", caption: "Dashboard" },
     ],
   },
 ];
-
 /* ======================= END OF EDITABLE CONTENT ======================= */
 
 const ICONS = {
-  bolt:  '<path d="M13 2 4 14h7l-1 8 9-12h-7l1-8Z"/>',
-  car:   '<path d="M5 17h14M5 17a2 2 0 1 1-4 0v-4l2.5-5.5A2 2 0 0 1 5.3 6h13.4a2 2 0 0 1 1.8 1.5L23 13v4a2 2 0 1 1-4 0"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/>',
-  door:  '<path d="M5 21V4a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v17"/><path d="M3 21h18"/><path d="M15 12h.01"/>',
-  gantt: '<path d="M3 4v16h18"/><path d="M7 8h6M10 12h8M8 16h5"/>',
-  check: '<path d="m5 12 5 5L20 7"/>',
   ext:   '<path d="M14 4h6v6"/><path d="M20 4 10 14"/><path d="M19 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h5"/>',
   copy:  '<rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a1 1 0 0 1 1-1h10"/>',
   info:  '<circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/>',
   lock:  '<rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/>',
   arrow: '<path d="M7 17 17 7M8 7h9v9"/>',
-  folder:'<path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/>',
 };
-const svg = (name, sw = 2) => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="${sw}" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONS[name] || ""}</svg>`;
+const svg = (name, sw = 1.8) => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="${sw}" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONS[name] || ""}</svg>`;
 const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));
 const host = u => { try { return new URL(u).host; } catch { return ""; } };
+const icon = (t, cls) => `<img class="${cls}" src="${esc(t.icon)}" alt="">`;
 
 /* ---------- Drawn interface previews (shown until real screenshots exist) ---------- */
 const T = (x, y, s, size = 11, fill = "var(--ui-text)", w = 500, anchor = "start") =>
   `<text x="${x}" y="${y}" font-size="${size}" fill="${fill}" font-weight="${w}" text-anchor="${anchor}">${s}</text>`;
-const bar = (x, y, w, h = 8, fill = "var(--ui-line)", r = 4) => `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${r}" fill="${fill}"/>`;
-const panel = (x, y, w, h) => `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="10" fill="var(--ui-panel)" stroke="var(--ui-line)"/>`;
+const bar = (x, y, w, h = 8, fill = "var(--ui-line)", r = 2) => `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${r}" fill="${fill}"/>`;
+const panel = (x, y, w, h) => `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="4" fill="var(--ui-panel)" stroke="var(--ui-line)"/>`;
+const A = "#f0f0f0", B = "#9a9a9a", C = "#5e5e5e";
 
 const MOCKS = {
-  blast: (c1, c2) => {
-    // log-log overpressure curve
+  blast: () => {
     const pts = []; for (let i = 0; i <= 40; i++) { const x = 330 + i * 10.5; const y = 120 + 260 * (1 - Math.exp(-i / 9)); pts.push(`${x.toFixed(1)},${y.toFixed(1)}`); }
-    const rings = [90, 66, 44, 24].map((r, i) => `<circle cx="160" cy="390" r="${r}" fill="${[c1, c1, c2, c2][i]}" fill-opacity="${[.08, .14, .22, .4][i]}" stroke="${c1}" stroke-opacity=".5"/>`).join("");
+    const rings = [90, 66, 44, 24].map((r, i) => `<circle cx="160" cy="390" r="${r}" fill="#fff" fill-opacity="${[.03, .06, .1, .18][i]}" stroke="${B}" stroke-dasharray="${i ? "" : "3 3"}"/>`).join("");
     return `
       ${panel(20, 20, 280, 230)}
-      ${T(36, 46, "Scenario 1", 12, "var(--ui-text)", 700)} ${T(284, 46, "TNT", 10, c1, 700, "end")}
-      ${T(36, 78, "Explosive", 9.5, "var(--ui-dim)")} ${bar(36, 86, 248, 22, "var(--ui-bg)", 6)} ${T(46, 101, "TNT (reference)", 10)}
-      ${T(36, 130, "Charge mass", 9.5, "var(--ui-dim)")} ${bar(36, 140, 248, 5)} ${bar(36, 140, 150, 5, c1)} <circle cx="186" cy="142.5" r="7" fill="#fff" stroke="${c1}" stroke-width="2"/>
-      ${T(284, 130, "100 kg", 10, "var(--ui-text)", 700, "end")}
-      ${T(36, 172, "Distance", 9.5, "var(--ui-dim)")} ${bar(36, 182, 248, 5)} ${bar(36, 182, 92, 5, c2)} <circle cx="128" cy="184.5" r="7" fill="#fff" stroke="${c2}" stroke-width="2"/>
-      ${T(284, 172, "25 m", 10, "var(--ui-text)", 700, "end")}
-      ${bar(36, 206, 76, 30, `${c1}22`, 7)} ${T(44, 219, "Incident", 8.5, "var(--ui-dim)")} ${T(44, 231, "62.4 kPa", 10.5, c1, 700)}
-      ${bar(122, 206, 76, 30, `${c2}22`, 7)} ${T(130, 219, "Reflected", 8.5, "var(--ui-dim)")} ${T(130, 231, "171 kPa", 10.5, c2, 700)}
-      ${bar(208, 206, 76, 30, "var(--ui-bg)", 7)} ${T(216, 219, "Scaled Z", 8.5, "var(--ui-dim)")} ${T(216, 231, "5.39", 10.5, "var(--ui-text)", 700)}
-      ${panel(20, 262, 280, 220)} ${T(36, 288, "Hazard zones", 12, "var(--ui-text)", 700)}
-      <g clip-path="inset(0)">${rings}</g><circle cx="160" cy="390" r="4" fill="#fff"/>
-      ${panel(316, 20, 464, 300)} ${T(332, 46, "Overpressure vs distance", 12, "var(--ui-text)", 700)} ${T(764, 46, "log–log", 9.5, "var(--ui-dim)", 500, "end")}
+      ${T(36, 46, "Scenario 1", 12, "var(--ui-text)", 600)} ${T(284, 46, "TNT", 10, B, 600, "end")}
+      ${T(36, 78, "Explosive", 9.5, "var(--ui-dim)")} ${bar(36, 86, 248, 22, "#000", 3)} ${T(46, 101, "TNT (reference)", 10)}
+      ${T(36, 130, "Charge mass", 9.5, "var(--ui-dim)")} ${bar(36, 140, 248, 3)} ${bar(36, 140, 150, 3, A)} <circle cx="186" cy="141.5" r="6" fill="#000" stroke="${A}" stroke-width="2"/>
+      ${T(284, 130, "100 kg", 10, "var(--ui-text)", 600, "end")}
+      ${T(36, 172, "Distance", 9.5, "var(--ui-dim)")} ${bar(36, 182, 248, 3)} ${bar(36, 182, 92, 3, A)} <circle cx="128" cy="183.5" r="6" fill="#000" stroke="${A}" stroke-width="2"/>
+      ${T(284, 172, "25 m", 10, "var(--ui-text)", 600, "end")}
+      ${[["Incident", "62.4 kPa"], ["Reflected", "171 kPa"], ["Scaled Z", "5.39"]].map(([l, v], i) => `${bar(36 + i * 86, 206, 76, 30, "#000", 3)}<rect x="${36 + i * 86}" y="206" width="76" height="30" rx="3" fill="none" stroke="var(--ui-line)"/>${T(44 + i * 86, 219, l, 8.5, "var(--ui-dim)")}${T(44 + i * 86, 231, v, 10.5, A, 600)}`).join("")}
+      ${panel(20, 262, 280, 220)} ${T(36, 288, "Hazard zones", 12, "var(--ui-text)", 600)}
+      ${rings}<circle cx="160" cy="390" r="3" fill="#fff"/>
+      ${panel(316, 20, 464, 300)} ${T(332, 46, "Overpressure vs distance", 12, "var(--ui-text)", 600)} ${T(764, 46, "log–log", 9.5, "var(--ui-dim)", 500, "end")}
       ${[90, 150, 210, 270].map(y => `<line x1="330" y1="${y}" x2="764" y2="${y}" stroke="var(--ui-line)"/>`).join("")}
-      ${[[130, "Severe damage", c2], [200, "Window breakage", c1], [250, "Eardrum rupture", "#f5b83d"]].map(([y, l, col]) => `<line x1="330" y1="${y}" x2="764" y2="${y}" stroke="${col}" stroke-dasharray="4 4" stroke-opacity=".8"/>${T(762, y - 5, l, 8.5, col, 600, "end")}`).join("")}
-      <polyline points="${pts.join(" ")}" fill="none" stroke="url(#gl-blast)" stroke-width="3" stroke-linecap="round"/>
-      <defs><linearGradient id="gl-blast"><stop offset="0" stop-color="${c2}"/><stop offset="1" stop-color="${c1}"/></linearGradient></defs>
-      ${panel(316, 332, 464, 150)} ${T(332, 358, "People in the open", 12, "var(--ui-text)", 700)}
-      ${[["Killed", 8, c2], ["Serious injury", 22, c1], ["Minor injury", 41, "#f5b83d"], ["Uninjured", 29, "#34d399"]].map(([l, v, col], i) => `${T(332, 386 + i * 24, l, 9.5, "var(--ui-dim)")}${bar(430, 378 + i * 24, 330, 10, "var(--ui-bg)", 5)}${bar(430, 378 + i * 24, 330 * v / 45, 10, col, 5)}${T(764, 386 + i * 24, v + "%", 9.5, "var(--ui-text)", 700, "end")}`).join("")}`;
+      ${[383, 486, 589, 692].map(x => `<line x1="${x}" y1="70" x2="${x}" y2="300" stroke="var(--ui-line)"/>`).join("")}
+      ${[[130, "Severe damage"], [200, "Window breakage"], [250, "Eardrum rupture"]].map(([y, l]) => `<line x1="330" y1="${y}" x2="764" y2="${y}" stroke="${B}" stroke-dasharray="4 4"/>${T(762, y - 5, l, 8.5, B, 500, "end")}`).join("")}
+      <polyline points="${pts.join(" ")}" fill="none" stroke="${A}" stroke-width="2.2"/>
+      ${panel(316, 332, 464, 150)} ${T(332, 358, "People in the open", 12, "var(--ui-text)", 600)}
+      ${[["Killed", 8], ["Serious injury", 22], ["Minor injury", 41], ["Uninjured", 29]].map(([l, v], i) => `${T(332, 386 + i * 24, l, 9.5, "var(--ui-dim)")}${bar(430, 378 + i * 24, 330, 9, "#000", 2)}${bar(430, 378 + i * 24, 330 * v / 45, 9, [A, "#c8c8c8", B, C][i], 2)}${T(764, 386 + i * 24, v + "%", 9.5, "var(--ui-text)", 600, "end")}`).join("")}`;
   },
-  vda: (c1, c2) => {
+  vda: () => {
     const route = "M60 440 L60 330 Q60 270 120 270 L230 270 Q290 270 290 210 L290 120";
-    const speeds = [["Car", c1, 0], ["Van", c2, 12], ["Rigid HGV", "#22c3a6", 30]];
     const curve = off => { const p = []; for (let i = 0; i <= 30; i++) { const x = 360 + i * 13.6; const y = 380 - (180 - off) * Math.sqrt(i / 30) + (i > 17 && i < 22 ? 30 : 0); p.push(`${x.toFixed(1)},${y.toFixed(1)}`); } return p.join(" "); };
     return `
-      <rect x="20" y="20" width="310" height="462" rx="10" fill="var(--ui-panel)" stroke="var(--ui-line)"/>
-      ${[...Array(9)].map((_, i) => `<line x1="20" y1="${70 + i * 46}" x2="330" y2="${70 + i * 46}" stroke="var(--ui-line)" stroke-opacity=".5"/>`).join("")}
-      ${[...Array(6)].map((_, i) => `<line x1="${70 + i * 50}" y1="20" x2="${70 + i * 50}" y2="482" stroke="var(--ui-line)" stroke-opacity=".5"/>`).join("")}
-      <rect x="150" y="320" width="70" height="90" rx="3" fill="var(--ui-line)"/><rect x="110" y="120" width="90" height="70" rx="3" fill="var(--ui-line)"/>
-      <rect x="250" y="48" width="80" height="50" rx="4" fill="${c1}" fill-opacity=".18" stroke="${c1}"/>${T(290, 78, "ASSET", 9, c1, 700, "middle")}
-      <line x1="236" y1="112" x2="330" y2="112" stroke="${c2}" stroke-width="3" stroke-dasharray="7 4"/>${T(236, 128, "Line of protection A", 8.5, c2, 600)}
-      <path d="${route}" fill="none" stroke="${c1}" stroke-width="4" stroke-linecap="round" opacity=".9"/>
-      <circle cx="60" cy="440" r="7" fill="#fff" stroke="${c1}" stroke-width="3"/><circle cx="290" cy="120" r="7" fill="${c2}"/>
-      ${T(36, 46, "Map assessment", 12, "var(--ui-text)", 700)}
-      ${panel(346, 20, 434, 300)} ${T(362, 46, "Speed vs distance", 12, "var(--ui-text)", 700)}
+      <rect x="20" y="20" width="310" height="462" rx="4" fill="var(--ui-panel)" stroke="var(--ui-line)"/>
+      ${[...Array(9)].map((_, i) => `<line x1="20" y1="${70 + i * 46}" x2="330" y2="${70 + i * 46}" stroke="var(--ui-line)" stroke-opacity=".6"/>`).join("")}
+      ${[...Array(6)].map((_, i) => `<line x1="${70 + i * 50}" y1="20" x2="${70 + i * 50}" y2="482" stroke="var(--ui-line)" stroke-opacity=".6"/>`).join("")}
+      <rect x="150" y="320" width="70" height="90" fill="#1a1a1a" stroke="#333"/><rect x="110" y="120" width="90" height="70" fill="#1a1a1a" stroke="#333"/>
+      <rect x="250" y="48" width="80" height="50" fill="none" stroke="${A}"/>${T(290, 78, "ASSET", 9, A, 600, "middle")}
+      <line x1="236" y1="112" x2="330" y2="112" stroke="${A}" stroke-width="2" stroke-dasharray="6 4"/>${T(236, 128, "Line of protection A", 8.5, B, 500)}
+      <path d="${route}" fill="none" stroke="${A}" stroke-width="2.5"/>
+      <circle cx="60" cy="440" r="5" fill="#000" stroke="${A}" stroke-width="2"/><circle cx="290" cy="120" r="4" fill="${A}"/>
+      ${T(36, 46, "Map assessment", 12, "var(--ui-text)", 600)}
+      ${panel(346, 20, 434, 300)} ${T(362, 46, "Speed vs distance", 12, "var(--ui-text)", 600)}
       ${[110, 170, 230, 290, 350].map(y => `<line x1="360" y1="${y}" x2="768" y2="${y}" stroke="var(--ui-line)"/>`).join("")}
-      ${speeds.map(([l, col, off], i) => `<polyline points="${curve(off)}" fill="none" stroke="${col}" stroke-width="2.6" stroke-linecap="round"/>${bar(560 + i * 70, 38, 10, 4, col, 2)}${T(574 + i * 70, 43, l, 8.5, "var(--ui-dim)")}`).join("")}
-      ${panel(346, 332, 434, 150)} ${T(362, 358, "Impact speed at line of protection", 12, "var(--ui-text)", 700)}
-      ${[["Vehicle class", "Mass", "Speed"], ["M1 car", "1,500 kg", "64 km/h"], ["N1 van", "3,500 kg", "58 km/h"], ["N2 rigid HGV", "7,200 kg", "47 km/h"]].map((r, i) => `${i ? `<line x1="362" y1="${368 + i * 26}" x2="764" y2="${368 + i * 26}" stroke="var(--ui-line)"/>` : ""}${T(362, 386 + i * 26, r[0], 9.5, i ? "var(--ui-text)" : "var(--ui-dim)", i ? 500 : 600)}${T(560, 386 + i * 26, r[1], 9.5, i ? "var(--ui-text)" : "var(--ui-dim)", i ? 500 : 600)}${T(764, 386 + i * 26, r[2], 9.5, i ? c1 : "var(--ui-dim)", i ? 700 : 600, "end")}`).join("")}`;
+      ${[["Car", A, 0, ""], ["Van", B, 12, "6 3"], ["Rigid HGV", C, 30, "2 3"]].map(([l, col, off, dash], i) => `<polyline points="${curve(off)}" fill="none" stroke="${col}" stroke-width="2" stroke-dasharray="${dash}"/><line x1="${560 + i * 70}" y1="40" x2="${572 + i * 70}" y2="40" stroke="${col}" stroke-width="2" stroke-dasharray="${dash}"/>${T(576 + i * 70, 43, l, 8.5, "var(--ui-dim)")}`).join("")}
+      ${panel(346, 332, 434, 150)} ${T(362, 358, "Impact speed at line of protection", 12, "var(--ui-text)", 600)}
+      ${[["Vehicle class", "Mass", "Speed"], ["M1 car", "1,500 kg", "64 km/h"], ["N1 van", "3,500 kg", "58 km/h"], ["N2 rigid HGV", "7,200 kg", "47 km/h"]].map((r, i) => `${i ? `<line x1="362" y1="${368 + i * 26}" x2="764" y2="${368 + i * 26}" stroke="var(--ui-line)"/>` : ""}${T(362, 386 + i * 26, r[0], 9.5, i ? "var(--ui-text)" : "var(--ui-dim)", i ? 400 : 600)}${T(560, 386 + i * 26, r[1], 9.5, i ? "var(--ui-text)" : "var(--ui-dim)", i ? 400 : 600)}${T(764, 386 + i * 26, r[2], 9.5, i ? A : "var(--ui-dim)", 600, "end")}`).join("")}`;
   },
-  door: (c1, c2) => {
+  door: () => {
     const steps = ["Configuration", "Locking", "Fire", "Attack", "Escape", "Operation", "Furniture"];
     const cards = [["Electromagnetic lock", "Fail-safe · 12/24 V", true], ["Motor lock, 3-point", "Fail-secure · LPS 1175 B3", true], ["Electric strike", "Fail-safe · FD30", true], ["Solenoid bolt", "No fire evidence", false]];
     return `
-      ${T(36, 50, "Configure doorset", 15, "var(--ui-text)", 750)} ${T(36, 70, "Single leaf · FD60 · LPS 1175 SR3 · Escape route", 10, "var(--ui-dim)")}
-      ${steps.map((s, i) => { const x = 50 + i * 115; const done = i < 4, cur = i === 4; return `${i ? `<line x1="${x - 103}" y1="104" x2="${x - 12}" y2="104" stroke="${i <= 4 ? c1 : "var(--ui-line)"}" stroke-width="2"/>` : ""}<circle cx="${x}" cy="104" r="11" fill="${done ? c1 : cur ? "var(--ui-panel)" : "var(--ui-bg)"}" stroke="${done || cur ? c1 : "var(--ui-line)"}" stroke-width="2"/>${done ? `<path d="M${x - 4.5} 104l3 3 6-6" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"/>` : T(x, 108, i + 1, 9.5, cur ? c1 : "var(--ui-dim)", 700, "middle")}${T(x, 132, s, 9, cur ? "var(--ui-text)" : "var(--ui-dim)", cur ? 700 : 500, "middle")}`; }).join("")}
-      ${cards.map(([h, sub, ok], i) => { const x = 20 + (i % 2) * 385, y = 156 + Math.floor(i / 2) * 118; return `<rect x="${x}" y="${y}" width="375" height="106" rx="10" fill="var(--ui-panel)" stroke="${i === 1 ? c1 : "var(--ui-line)"}" stroke-width="${i === 1 ? 2 : 1}"/>
-        <rect x="${x + 16}" y="${y + 16}" width="42" height="42" rx="9" fill="${ok ? c1 : "var(--ui-dim)"}" fill-opacity=".16"/><rect x="${x + 30}" y="${y + 24}" width="14" height="26" rx="2" fill="none" stroke="${ok ? c1 : "var(--ui-dim)"}" stroke-width="2"/>
-        ${T(x + 72, y + 34, h, 12, ok ? "var(--ui-text)" : "var(--ui-dim)", 650)} ${T(x + 72, y + 52, sub, 9.5, "var(--ui-dim)")}
-        ${ok ? `${bar(x + 72, y + 70, 82, 20, `${c1}22`, 10)}${T(x + 113, y + 84, "✓ Compatible", 9, c1, 700, "middle")}${bar(x + 162, y + 70, 70, 20, "var(--ui-bg)", 10)}${T(x + 197, y + 84, "Evidence", 9, "var(--ui-dim)", 600, "middle")}` : `${bar(x + 72, y + 70, 100, 20, "rgba(255,90,90,.12)", 10)}${T(x + 122, y + 84, "Not compatible", 9, "#ff6b6b", 700, "middle")}`}`; }).join("")}
-      ${panel(20, 400, 760, 82)} ${T(36, 428, "Selected combination", 10, "var(--ui-dim)")} ${T(36, 452, "Motor lock, 3-point  +  Timber FD60 leaf  +  12 V monitored PSU", 12, "var(--ui-text)", 650)}
-      <rect x="626" y="424" width="138" height="36" rx="9" fill="url(#gl-door)"/>${T(695, 446, "Export schedule", 10.5, "#fff", 700, "middle")}
-      <defs><linearGradient id="gl-door" x1="0" x2="1"><stop offset="0" stop-color="${c1}"/><stop offset="1" stop-color="${c2}"/></linearGradient></defs>`;
+      ${T(36, 50, "Configure doorset", 15, "var(--ui-text)", 600)} ${T(36, 70, "Single leaf · FD60 · LPS 1175 SR3 · Escape route", 10, "var(--ui-dim)")}
+      ${steps.map((s, i) => { const x = 50 + i * 115; const done = i < 4, cur = i === 4; return `${i ? `<line x1="${x - 103}" y1="104" x2="${x - 12}" y2="104" stroke="${i <= 4 ? A : "var(--ui-line)"}" stroke-width="1.5"/>` : ""}<circle cx="${x}" cy="104" r="10" fill="${done ? A : "#000"}" stroke="${done || cur ? A : "var(--ui-line)"}" stroke-width="1.5"/>${done ? `<path d="M${x - 4.5} 104l3 3 6-6" fill="none" stroke="#000" stroke-width="2"/>` : T(x, 108, i + 1, 9.5, cur ? A : "var(--ui-dim)", 600, "middle")}${T(x, 132, s, 9, cur ? "var(--ui-text)" : "var(--ui-dim)", cur ? 600 : 400, "middle")}`; }).join("")}
+      ${cards.map(([h, sub, ok], i) => { const x = 20 + (i % 2) * 385, y = 156 + Math.floor(i / 2) * 118; return `<rect x="${x}" y="${y}" width="375" height="106" rx="4" fill="var(--ui-panel)" stroke="${i === 1 ? A : "var(--ui-line)"}" stroke-width="${i === 1 ? 1.5 : 1}"/>
+        <rect x="${x + 16}" y="${y + 16}" width="42" height="42" rx="4" fill="#000" stroke="var(--ui-line)"/><rect x="${x + 30}" y="${y + 24}" width="14" height="26" rx="2" fill="none" stroke="${ok ? A : C}" stroke-width="1.5"/>
+        ${T(x + 72, y + 34, h, 12, ok ? "var(--ui-text)" : "var(--ui-dim)", 600)} ${T(x + 72, y + 52, sub, 9.5, "var(--ui-dim)")}
+        ${ok ? `<rect x="${x + 72}" y="${y + 70}" width="82" height="20" rx="3" fill="none" stroke="${B}"/>${T(x + 113, y + 84, "✓ Compatible", 9, A, 600, "middle")}<rect x="${x + 162}" y="${y + 70}" width="70" height="20" rx="3" fill="none" stroke="var(--ui-line)"/>${T(x + 197, y + 84, "Evidence", 9, "var(--ui-dim)", 500, "middle")}` : `<rect x="${x + 72}" y="${y + 70}" width="100" height="20" rx="3" fill="none" stroke="${C}" stroke-dasharray="3 2"/>${T(x + 122, y + 84, "Not compatible", 9, B, 600, "middle")}`}`; }).join("")}
+      ${panel(20, 400, 760, 82)} ${T(36, 428, "Selected combination", 10, "var(--ui-dim)")} ${T(36, 452, "Motor lock, 3-point  +  Timber FD60 leaf  +  12 V monitored PSU", 12, "var(--ui-text)", 600)}
+      <rect x="626" y="424" width="138" height="36" rx="4" fill="${A}"/>${T(695, 446, "Export schedule", 10.5, "#000", 600, "middle")}`;
   },
-  tracker: (c1, c2) => {
+  tracker: () => {
     const nav = ["Dashboard", "Timesheet", "Projects", "Gantt", "Proposals", "Utilisation", "Reports"];
-    const rows = [["Data centre, Phase 2", 0, 5, c1], ["Rail depot HVM", 2, 6, c2], ["Campus access control", 1, 3, "#7c9cff"], ["Embassy refurbishment", 4, 7, "#22c3a6"], ["Stadium blast review", 3, 4, c1], ["Hospital CCTV upgrade", 5, 8, c2], ["Bid: airport perimeter", 6, 8, "#b48cff"]];
+    const rows = [["Data centre, Phase 2", 0, 5], ["Rail depot HVM", 2, 6], ["Campus access control", 1, 3], ["Embassy refurbishment", 4, 7], ["Stadium blast review", 3, 4], ["Hospital CCTV upgrade", 5, 8], ["Bid: airport perimeter", 6, 8]];
     const months = ["Nov", "Dec", "Jan", "Feb", "Mar", "Apr", "May", "Jun"];
     const gx = 330, gw = 54;
     return `
       <rect x="0" y="0" width="150" height="500" fill="var(--ui-panel)"/><line x1="150" y1="0" x2="150" y2="500" stroke="var(--ui-line)"/>
-      <rect x="16" y="20" width="22" height="22" rx="6" fill="${c1}"/>${T(46, 35, "Project Tracker", 11, "var(--ui-text)", 700)}
-      ${nav.map((n, i) => `${i === 3 ? `<rect x="10" y="${62 + i * 32}" width="130" height="26" rx="7" fill="${c1}" fill-opacity=".14"/>` : ""}${bar(22, 71 + i * 32, 8, 8, i === 3 ? c1 : "var(--ui-dim)", 2)}${T(40, 79 + i * 32, n, 10, i === 3 ? c1 : "var(--ui-text)", i === 3 ? 700 : 500)}`).join("")}
-      ${T(170, 44, "Gantt", 15, "var(--ui-text)", 750)} ${T(170, 62, "7 active projects · 2 proposals", 9.5, "var(--ui-dim)")}
-      ${[["Utilisation", "86%"], ["Hours this week", "152"], ["Pipeline", "£1.4m"]].map(([l, v], i) => `${bar(470 + i * 106, 26, 98, 42, "var(--ui-panel)", 8)}${T(480 + i * 106, 42, l, 8.5, "var(--ui-dim)")}${T(480 + i * 106, 60, v, 12, "var(--ui-text)", 750)}`).join("")}
-      ${months.map((m, i) => `${T(gx + i * gw + gw / 2, 100, m, 9, "var(--ui-dim)", 600, "middle")}<line x1="${gx + i * gw}" y1="110" x2="${gx + i * gw}" y2="470" stroke="var(--ui-line)"/>`).join("")}
-      <line x1="${gx + 0.6 * gw}" y1="106" x2="${gx + 0.6 * gw}" y2="470" stroke="${c2}" stroke-width="1.5"/><circle cx="${gx + 0.6 * gw}" cy="106" r="3.5" fill="${c2}"/>
-      ${rows.map(([n, s, e, col], i) => { const y = 122 + i * 48; return `<line x1="160" y1="${y + 40}" x2="780" y2="${y + 40}" stroke="var(--ui-line)" stroke-opacity=".6"/>${T(170, y + 23, n, 10, "var(--ui-text)", 550)}<rect x="${gx + s * gw + 3}" y="${y + 9}" width="${(e - s) * gw - 6}" height="22" rx="6" fill="${col}" fill-opacity=".9"/><rect x="${gx + s * gw + 3}" y="${y + 9}" width="${((e - s) * gw - 6) * (0.3 + (i % 3) * 0.2)}" height="22" rx="6" fill="#fff" fill-opacity=".22"/>`; }).join("")}`;
+      <rect x="16" y="20" width="22" height="22" rx="4" fill="none" stroke="${A}"/>${T(46, 35, "Project Tracker", 11, "var(--ui-text)", 600)}
+      ${nav.map((n, i) => `${i === 3 ? `<rect x="10" y="${62 + i * 32}" width="130" height="26" rx="3" fill="#1a1a1a" stroke="#333"/>` : ""}${T(24, 79 + i * 32, n, 10, i === 3 ? A : "var(--ui-dim)", i === 3 ? 600 : 400)}`).join("")}
+      ${T(170, 44, "Gantt", 15, "var(--ui-text)", 600)} ${T(170, 62, "7 active projects · 2 proposals", 9.5, "var(--ui-dim)")}
+      ${[["Utilisation", "86%"], ["Hours this week", "152"], ["Pipeline", "£1.4m"]].map(([l, v], i) => `<rect x="${470 + i * 106}" y="26" width="98" height="42" rx="3" fill="var(--ui-panel)" stroke="var(--ui-line)"/>${T(480 + i * 106, 42, l, 8.5, "var(--ui-dim)")}${T(480 + i * 106, 60, v, 12, A, 600)}`).join("")}
+      ${months.map((m, i) => `${T(gx + i * gw + gw / 2, 100, m, 9, "var(--ui-dim)", 500, "middle")}<line x1="${gx + i * gw}" y1="110" x2="${gx + i * gw}" y2="470" stroke="var(--ui-line)"/>`).join("")}
+      <line x1="${gx + 0.6 * gw}" y1="106" x2="${gx + 0.6 * gw}" y2="470" stroke="${A}" stroke-width="1"/><circle cx="${gx + 0.6 * gw}" cy="106" r="3" fill="${A}"/>
+      ${rows.map(([n, s, e], i) => { const y = 122 + i * 48, w = (e - s) * gw - 6; return `<line x1="160" y1="${y + 40}" x2="780" y2="${y + 40}" stroke="var(--ui-line)" stroke-opacity=".7"/>${T(170, y + 23, n, 10, "var(--ui-text)", 400)}<rect x="${gx + s * gw + 3}" y="${y + 10}" width="${w}" height="20" rx="2" fill="#2a2a2a" stroke="${C}"/><rect x="${gx + s * gw + 3}" y="${y + 10}" width="${w * (0.3 + (i % 3) * 0.2)}" height="20" rx="2" fill="${B}"/>`; }).join("")}`;
   },
 };
-
-let mockN = 0;
-const mockSVG = t => {
-  // unique gradient ids per instance (each tool's preview appears twice)
-  const n = ++mockN;
-  const body = MOCKS[t.mock](t.colors[0], t.colors[1]).replace(/gl-(\w+)/g, `gl-$1-${n}`);
-  return `<svg class="mock" viewBox="0 0 800 500" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Illustration of the ${esc(t.name)} interface"><rect width="800" height="500" fill="var(--ui-bg)"/>${body}</svg><span class="illus">Illustration</span>`;
-};
+const mockSVG = t => `<svg class="mock" viewBox="0 0 800 500" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Illustration of the ${esc(t.name)} interface"><rect width="800" height="500" fill="var(--ui-bg)"/>${MOCKS[t.mock]()}</svg><span class="illus">Illustration</span>`;
 
 /* ---------- Render ---------- */
-const cv = t => `--c:${t.colors[0]}`;
 const live = TOOLS.filter(t => t.url).length;
-document.getElementById("count-pill").textContent = `${TOOLS.length} tools`;
-document.getElementById("status-text").textContent = `${live} of ${TOOLS.length} online`;
+const invite = TOOLS.filter(t => t.restricted).length;
+document.getElementById("status-text").textContent = `${live} web · ${invite} invite-only`;
 document.getElementById("foot-left").textContent = `© ${new Date().getFullYear()} Security Tools · Created by James Norman`;
+document.getElementById("spec").innerHTML = [[TOOLS.length, "Tools"], [TOOLS.reduce((n, t) => n + (t.refs || []).length, 0), "References"], [live, "Web apps"]]
+  .map(([b, s]) => `<div><b>${String(b).padStart(2, "0")}</b><span>${s}</span></div>`).join("");
 
 document.getElementById("nav-tools").innerHTML = TOOLS.map(t =>
-  `<li><a href="#${t.id}" data-spy="${t.id}"><span class="nav-dot" style="${cv(t)}">${svg(t.icon, 2.6)}</span>${esc(t.name)}</a></li>`).join("");
+  `<li><a href="#${t.id}" data-spy="${t.id}">${icon(t, "nav-ico")}${esc(t.name)}<span class="nav-id">${esc(t.code)}</span></a></li>`).join("");
 
-const openLabel = t => t.url ? (t.openLabel || "Open app") : "Link coming soon";
+const openLabel = t => t.url ? (t.openLabel || "Open tool") : "Link coming soon";
 document.getElementById("launcher").innerHTML = TOOLS.map(t => `
-  <article class="app" style="${cv(t)}">
+  <article class="app">
     <div class="app-thumb" data-thumb="${t.id}">${mockSVG(t)}</div>
     <div class="app-body">
-      <div class="app-name"><span class="app-icon">${svg(t.icon)}</span>${esc(t.name)}<span class="app-tag">${esc(t.tag)}</span></div>
+      <div class="app-top">${icon(t, "app-icon")}<div><div class="app-name">${esc(t.name)}</div><div class="app-id">${esc(t.code)} · ${esc(t.kicker)}</div></div></div>
       <div class="app-sub">${esc(t.short)}</div>
       <div class="app-foot">
         ${t.url
-          ? `<a class="app-open app-link" href="${esc(t.url)}" target="_blank" rel="noopener" aria-label="Open ${esc(t.name)}">${openLabel(t)} ${svg("arrow", 2.4)}</a>`
-          : `<a class="app-open app-link" href="#${t.id}" style="color:var(--muted)">${openLabel(t)}</a>`}
+          ? `<a class="app-open app-link" href="${esc(t.url)}" target="_blank" rel="noopener" aria-label="Open ${esc(t.name)}">${openLabel(t)} ${svg("arrow", 2)}</a>`
+          : `<a class="app-open off app-link" href="#${t.id}">${t.restricted ? svg("lock", 2) + esc(t.restricted) : openLabel(t)}</a>`}
         <a class="app-details" href="#${t.id}">Details</a>
       </div>
     </div>
   </article>`).join("");
 
 document.getElementById("tools").innerHTML = TOOLS.map((t, i) => {
-  const shots = t.screenshots || [];
   const open = t.url
-    ? `<a class="button primary" style="background:${t.colors[0]};border-color:${t.colors[0]};color:#fff" href="${esc(t.url)}" target="_blank" rel="noopener">${openLabel(t)} ${svg("ext", 2.2)}</a>`
-    : `<span class="button" aria-disabled="true">Link coming soon</span>`;
+    ? `<a class="button primary" href="${esc(t.url)}" target="_blank" rel="noopener">${openLabel(t)} ${svg("ext", 2)}</a>`
+    : t.restricted
+      ? `<span class="button restricted" aria-disabled="true">${svg("lock", 2)} ${esc(t.restricted)}</span>`
+      : `<span class="button" aria-disabled="true">Link coming soon</span>`;
   const copy = t.url && t.copyable ? `<button class="button" type="button" data-copy="${i}">${svg("copy")}<span>Copy link</span></button>` : "";
   return `
-  <section class="tool" id="${t.id}" style="${cv(t)}">
+  <section class="tool" id="${t.id}">
     <div class="tool-head">
-      <span class="app-icon">${svg(t.icon)}</span>
-      <div><h2>${esc(t.name)}</h2><div class="kicker">${esc(t.kicker)}</div></div>
+      ${icon(t, "app-icon")}
+      <div><h2>${esc(t.name)}</h2><div class="kicker">${esc(t.code)} · ${esc(t.kicker)}</div></div>
       ${open}
     </div>
     <div class="tool-body">
@@ -567,14 +521,16 @@ document.getElementById("tools").innerHTML = TOOLS.map((t, i) => {
           <button class="shot-main" type="button" tabindex="-1" aria-label="Enlarge screenshot of ${esc(t.name)}">${mockSVG(t)}</button>
         </div>
         <div class="thumbs" hidden></div>
-        <div class="caption">${shots[0] ? "" : ""}</div>
+        <div class="fig"><span>Fig. ${i + 1}</span><span class="caption">${esc(t.screenshots?.[0]?.caption || "")} (illustrative)</span></div>
       </div>
       <div>
         <p class="tagline">${esc(t.tagline)}</p>
         <p class="desc">${esc(t.description)}</p>
         <div class="stats">${(t.stats || []).map(([b, s]) => `<div class="stat"><div class="stat-value">${esc(b)}</div><div class="stat-sub">${esc(s)}</div></div>`).join("")}</div>
-        <ul class="features">${(t.features || []).map(([h, d]) => `<li><span class="check">${svg("check", 3)}</span><div><b>${esc(h)}</b><span>${esc(d)}</span></div></li>`).join("")}</ul>
+        <ul class="features">${(t.features || []).map(([h, d], j) => `<li><span class="n">${String(j + 1).padStart(2, "0")}</span><div><b>${esc(h)}</b><span>${esc(d)}</span></div></li>`).join("")}</ul>
+        ${t.refs ? `<div class="refs"><span class="label">References</span>${t.refs.map(r => `<span class="ref">${esc(r)}</span>`).join("")}</div>` : ""}
         <div class="actions">${open}${copy}</div>
+        ${t.restrictedNote ? `<div class="restricted-note">${svg("lock", 2)}<div><b>Why there's no link</b><span>${esc(t.restrictedNote)}</span></div></div>` : ""}
         ${t.note ? `<div class="note">${svg(t.url ? "lock" : "info")}<span>${esc(t.note)}</span></div>` : ""}
       </div>
     </div>
@@ -585,11 +541,9 @@ document.getElementById("tools").innerHTML = TOOLS.map((t, i) => {
 const probe = src => new Promise(res => { const im = new Image(); im.onload = () => res(true); im.onerror = () => res(false); im.src = src; });
 TOOLS.forEach(async (t, i) => {
   const shots = t.screenshots || [];
-  const ok = shots.filter((_, j) => j >= 0);
-  const found = (await Promise.all(ok.map(s => probe(s.src)))).map((v, j) => v && ok[j]).filter(Boolean);
+  const found = (await Promise.all(shots.map(s => probe(s.src)))).map((v, j) => v && shots[j]).filter(Boolean);
   if (!found.length) return;
-  const thumb = document.querySelector(`[data-thumb="${t.id}"]`);
-  thumb.innerHTML = `<img src="${esc(found[0].src)}" alt="${esc(t.name)}">`;
+  document.querySelector(`[data-thumb="${t.id}"]`).innerHTML = `<img class="shot" src="${esc(found[0].src)}" alt="${esc(t.name)}">`;
   const wrap = document.querySelector(`.shot-wrap[data-tool="${i}"]`);
   const main = wrap.querySelector(".shot-main");
   main.classList.add("has-img"); main.tabIndex = 0;
@@ -641,21 +595,10 @@ const setActive = id => spyLinks.forEach(a => {
   a.classList.toggle("active", on);
 });
 if ("IntersectionObserver" in window) {
-  const io = new IntersectionObserver(es => {
-    es.forEach(en => { if (en.isIntersecting) setActive(en.target.id); });
-  }, { rootMargin: "-35% 0px -60% 0px" });
+  const io = new IntersectionObserver(es => es.forEach(en => { if (en.isIntersecting) setActive(en.target.id); }), { rootMargin: "-35% 0px -60% 0px" });
   TOOLS.forEach(t => io.observe(document.getElementById(t.id)));
   addEventListener("scroll", () => { if (scrollY < 200) setActive("top"); }, { passive: true });
 }
-
-/* Theme toggle (remembered per browser) */
-const root = document.documentElement;
-try { const saved = localStorage.getItem("theme"); if (saved) root.dataset.theme = saved; } catch {}
-document.getElementById("theme-btn").addEventListener("click", () => {
-  const isDark = root.dataset.theme === "dark" || (!root.dataset.theme && matchMedia("(prefers-color-scheme: dark)").matches);
-  root.dataset.theme = isDark ? "light" : "dark";
-  try { localStorage.setItem("theme", root.dataset.theme); } catch {}
-});
 </script>
 </body>
 </html>
