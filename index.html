@@ -176,6 +176,16 @@
   .refs .label { width: 100%; margin-bottom: .1rem; }
   .ref { font-family: var(--mono); font-size: .74rem; color: var(--text); border: 1px solid var(--line-2); border-radius: 3px; padding: .15rem .5rem; background: color-mix(in srgb, var(--c) 8%, #000); border-color: color-mix(in srgb, var(--c) 35%, var(--line-2)); }
   .button.restricted { color: var(--text); border-color: var(--line-3); border-style: dashed; cursor: default; }
+  .local-open { margin-top: 1rem; padding: 1rem 1.1rem; border: 1px solid color-mix(in srgb, var(--c) 45%, var(--line-2)); border-radius: var(--radius); background: color-mix(in srgb, var(--c) 6%, #000); }
+  .local-open > b { display: block; font-family: var(--mono); font-weight: 500; font-size: .72rem; letter-spacing: .08em; text-transform: uppercase; color: var(--c); margin-bottom: .5rem; }
+  .local-open ol { margin: 0 0 .8rem; padding-left: 1.2rem; color: var(--text); font-size: .9rem; display: grid; gap: .2rem; }
+  .local-open kbd { font-family: var(--mono); font-size: .75rem; padding: .05rem .4rem; border: 1px solid var(--line-3); border-bottom-width: 2px; border-radius: 3px; background: var(--panel-2); color: var(--white); }
+  .path-row { display: flex; gap: .5rem; align-items: stretch; flex-wrap: wrap; }
+  .path { flex: 1 1 18rem; min-width: 0; font-family: var(--mono); font-size: .78rem; color: var(--white); background: #000; border: 1px solid var(--line-2); border-radius: var(--radius); padding: .55rem .7rem; overflow-wrap: anywhere; user-select: all; }
+  .sandbox { display: flex; gap: .55rem; align-items: flex-start; margin-top: .8rem; padding: .6rem .7rem; border: 1px dashed color-mix(in srgb, #f5b83d 55%, var(--line-2)); border-radius: var(--radius); font-size: .84rem; color: var(--muted); }
+  .sandbox svg { width: .95rem; height: .95rem; flex: none; margin-top: .2rem; color: #f5b83d; }
+  .sandbox b { color: #f5b83d; font-weight: 600; }
+  .local-open small { display: block; margin-top: .6rem; font-size: .78rem; color: var(--faint); }
   .restricted-note { display: flex; gap: .7rem; align-items: flex-start; margin-top: 1rem; padding: .8rem .9rem; border: 1px solid var(--line-2); border-left: 2px solid var(--c); border-radius: var(--radius); background: color-mix(in srgb, var(--c) 7%, #000); }
   .restricted-note svg { width: 1rem; height: 1rem; flex: none; margin-top: .15rem; color: var(--white); }
   .restricted-note b { display: block; font-family: var(--mono); font-weight: 500; font-size: .72rem; letter-spacing: .08em; text-transform: uppercase; color: var(--white); margin-bottom: .2rem; }
@@ -396,7 +406,9 @@ const TOOLS = [
     url: "",
     // No public link: shown instead of an Open button.
     restricted: "Offline only",
-    restrictedNote: "Project Tracker is not meant to be online. It is an offline, totally secure app that runs from the AECOM server, so there is no web link. Access is by invitation only: ask an admin for an invite.",
+    restrictedNote: "Project Tracker is not meant to be online. It is an offline, totally secure app that runs from the AECOM server, so there is no web link. Open it from the synced team folder on your PC instead. Access is by invitation only: ask an admin for an invite.",
+    // Opened with Windows key + R (browsers can't open local files from a web page).
+    localPath: "%USERPROFILE%\\AECOM\\AECOM Security Team - General\\1 - Finance\\AECOM-Security\\AECOM-Security.html",
     screenshots: [
       { src: "screenshots/tracker-1.png", caption: "Gantt view" },
       { src: "screenshots/tracker-2.png", caption: "Dashboard" },
@@ -522,7 +534,7 @@ document.getElementById("launcher").innerHTML = TOOLS.map(t => `
       <div class="app-foot">
         ${t.url
           ? `<a class="app-open app-link" href="${esc(t.url)}" target="_blank" rel="noopener" aria-label="Open ${esc(t.name)}">${openLabel(t)} ${svg("arrow", 2)}</a>`
-          : `<a class="app-open off app-link" href="#${t.id}">${t.restricted ? svg("lock", 2) + esc(t.restricted) : openLabel(t)}</a>`}
+          : `<a class="app-open off app-link" href="#${t.id}">${t.localPath ? svg("arrow", 2) + "Open on your PC" : t.restricted ? svg("lock", 2) + esc(t.restricted) : openLabel(t)}</a>`}
         <a class="app-details" href="#${t.id}">Details</a>
       </div>
     </div>
@@ -559,6 +571,13 @@ document.getElementById("tools").innerHTML = TOOLS.map((t, i) => {
         ${t.refs ? `<div class="refs"><span class="label">References</span>${t.refs.map(r => `<span class="ref">${esc(r)}</span>`).join("")}</div>` : ""}
         <div class="actions">${open}${copy}</div>
         ${t.restrictedNote ? `<div class="restricted-note">${svg("lock", 2)}<div><b>Not available online</b><span>${esc(t.restrictedNote)}</span></div></div>` : ""}
+        ${t.localPath ? `<div class="local-open">
+          <b>Open on your PC</b>
+          <ol><li>Press <kbd>Windows</kbd> + <kbd>R</kbd></li><li>Paste the path below (<kbd>Ctrl</kbd> + <kbd>V</kbd>)</li><li>Press <kbd>Enter</kbd>. It opens in Edge or Chrome.</li></ol>
+          <div class="path-row"><code class="path" tabindex="0">${esc(t.localPath)}</code><button class="button primary" type="button" data-copy-path="${i}">${svg("copy", 2)}<span>Copy path</span></button></div>
+          <div class="sandbox">${svg("info", 2)}<span><b>Don't open it inside Teams.</b> A Teams website tab or SharePoint preview runs the file in a sandbox with no access to the team folder, so it can't load or save any data. Always open it from the synced folder on your PC, as above.</span></div>
+          <small>Works on Windows PCs that sync the team's Teams folder with OneDrive. Not on phones or Macs.</small>
+        </div>` : ""}
         ${t.note ? `<div class="note">${svg(t.url ? "lock" : "info")}<span>${esc(t.note)}</span></div>` : ""}
       </div>
     </div>
@@ -603,6 +622,18 @@ document.addEventListener("click", async e => {
     lb.classList.add("open"); return;
   }
   if (e.target === lb || e.target.id === "lb-close") { lb.classList.remove("open"); return; }
+  const cpp = e.target.closest("[data-copy-path]");
+  if (cpp) {
+    const label = cpp.querySelector("span"), path = TOOLS[cpp.dataset.copyPath].localPath;
+    try { await navigator.clipboard.writeText(path); label.textContent = "Copied ✓"; }
+    catch {
+      const code = cpp.parentElement.querySelector(".path"), r = document.createRange();
+      r.selectNodeContents(code); getSelection().removeAllRanges(); getSelection().addRange(r);
+      label.textContent = "Press Ctrl + C";
+    }
+    setTimeout(() => (label.textContent = "Copy path"), 2000);
+    return;
+  }
   const cp = e.target.closest("[data-copy]");
   if (cp) {
     const label = cp.querySelector("span");
