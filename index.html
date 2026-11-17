@@ -30,7 +30,10 @@
     --faint: #5c5c5c;
     --white: #ffffff;
     --ok: #3ddc84;
+    --accent: #7c9cff;
+    --accent-2: #b48cff;
     --radius: 4px;
+    --bar: 4.25rem;
     --mono: "IBM Plex Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
     --sans: "IBM Plex Sans", "Segoe UI", system-ui, -apple-system, Roboto, sans-serif;
     /* drawn previews */
@@ -63,10 +66,10 @@
   .sidebar {
     background: var(--bg); border-right: 1px solid var(--line);
     display: flex; flex-direction: column; position: sticky; top: 0; height: 100vh;
-    padding: 1.1rem .75rem; min-width: 0;
+    padding: 0 .75rem 1.1rem; min-width: 0;
   }
-  .brand { display: flex; gap: .7rem; align-items: center; padding: .2rem .5rem 1.2rem; color: var(--white); font-weight: 600; font-size: 1.02rem; }
-  .brand small { display: block; font-family: var(--mono); font-weight: 400; color: var(--faint); font-size: .7rem; letter-spacing: .04em; margin-top: .1rem; }
+  .brand { flex: none; display: flex; gap: .75rem; align-items: center; height: var(--bar); margin: 0 -.75rem .4rem; padding: 0 1.25rem; border-bottom: 1px solid var(--line); color: var(--white); font-weight: 600; font-size: 1rem; letter-spacing: -.005em; line-height: 1.2; }
+  .brand small { display: block; font-family: var(--mono); font-weight: 400; color: var(--faint); font-size: .66rem; letter-spacing: .1em; text-transform: uppercase; margin-top: .2rem; }
   .logo { width: 2.1rem; height: 2.1rem; flex: none; border-radius: var(--radius); box-shadow: 0 0 0 1px var(--line-3); }
   .nav-label { padding: 1rem .6rem .45rem; }
   .sidebar ul { list-style: none; padding: 0; margin: 0; }
@@ -75,7 +78,7 @@
     color: var(--muted); margin-bottom: 2px; font-size: .93rem; border: 1px solid transparent;
   }
   .sidebar li a:hover { color: var(--text); background: var(--panel-2); }
-  .sidebar li a.active { color: var(--white); background: var(--panel-2); border-color: var(--line-2); }
+  .sidebar li a.active { color: var(--white); background: var(--panel-2); border-color: var(--line-2); box-shadow: inset 2px 0 0 var(--c, var(--accent)); }
   .nav-ico { width: 1.25rem; height: 1.25rem; flex: none; border-radius: 3px; box-shadow: 0 0 0 1px var(--line-2); }
   .nav-ico.grid { display: grid; place-items: center; box-shadow: none; color: currentColor; }
   .nav-ico.grid svg { width: 1rem; height: 1rem; }
@@ -85,18 +88,30 @@
   .status .dot { width: .45rem; height: .45rem; border-radius: 50%; background: var(--ok); box-shadow: 0 0 .5rem var(--ok); }
 
   .content { min-width: 0; }
-  .page { padding: 2rem 2.25rem 3rem; max-width: 120rem; margin: 0 auto; }
+  .topbar { position: sticky; top: 0; z-index: 10; height: var(--bar); display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 0 2.25rem; border-bottom: 1px solid var(--line); background: rgba(0,0,0,.88); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+  .crumbs { display: flex; align-items: center; gap: .6rem; font-family: var(--mono); font-size: .74rem; letter-spacing: .08em; text-transform: uppercase; color: var(--faint); white-space: nowrap; }
+  .crumbs b { color: var(--text); font-weight: 500; }
+  .crumbs i { width: 1px; height: .9rem; background: var(--line-3); }
+  .meta { display: flex; align-items: center; gap: 1.25rem; font-family: var(--mono); font-size: .7rem; letter-spacing: .08em; text-transform: uppercase; color: var(--faint); white-space: nowrap; }
+  .meta span b { color: var(--muted); font-weight: 500; }
+  .meta .live { display: inline-flex; align-items: center; gap: .45rem; padding: .3rem .6rem; border: 1px solid var(--line-2); border-radius: 3px; color: var(--muted); }
+  .meta .live::before { content: ""; width: .4rem; height: .4rem; border-radius: 50%; background: var(--ok); }
+  .page { padding: 2.75rem 2.25rem 3rem; max-width: 120rem; margin: 0 auto; }
 
   /* ── header ────────────────────────────────────────────── */
-  .masthead { display: grid; gap: 1.5rem; padding-bottom: 1.6rem; margin-bottom: 1.8rem; border-bottom: 1px solid var(--line); }
-  @media (min-width: 1100px) { .masthead { grid-template-columns: minmax(0, 1fr) auto; align-items: end; } }
-  .masthead h1 { font-size: 2.1rem; line-height: 1.1; color: var(--white); margin: .5rem 0 .6rem; }
-  .masthead p { color: var(--muted); max-width: 44rem; margin: 0; }
-  .spec { display: grid; grid-template-columns: repeat(3, auto); gap: 0; border: 1px solid var(--line-2); border-radius: var(--radius); }
-  .spec div { padding: .6rem 1rem; border-left: 1px solid var(--line-2); }
-  .spec div:first-child { border-left: 0; }
-  .spec b { display: block; font-family: var(--mono); font-weight: 500; font-size: 1.15rem; color: var(--white); }
-  .spec span { font-family: var(--mono); font-size: .68rem; letter-spacing: .06em; text-transform: uppercase; color: var(--faint); }
+  .masthead { display: grid; gap: 2rem; padding-bottom: 2.4rem; margin-bottom: 2.4rem; border-bottom: 1px solid var(--line); }
+  @media (min-width: 1100px) { .masthead { grid-template-columns: minmax(0, 1fr) minmax(0, 26rem); align-items: end; gap: 4rem; } }
+  .eyebrow { display: flex; align-items: center; gap: .75rem; }
+  .eyebrow { color: var(--accent); }
+  .eyebrow::before { content: ""; width: 1.5rem; height: 2px; background: linear-gradient(90deg, var(--accent), var(--accent-2)); }
+  .masthead h1 em { font-style: normal; background: linear-gradient(100deg, var(--accent), var(--accent-2)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .masthead h1 { font-size: clamp(2.2rem, 3.6vw, 3.4rem); line-height: 1.04; letter-spacing: -.03em; font-weight: 600; color: var(--white); margin: 1.1rem 0 1rem; }
+  .masthead p { color: #a6a6a6; font-size: 1.08rem; line-height: 1.6; max-width: 40rem; margin: 0; }
+  .spec { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-top: 1px solid var(--line-3); }
+  .spec div { padding: .9rem 0 0; }
+  .spec div + div { padding-left: 1.25rem; border-left: 1px solid var(--line); }
+  .spec b { display: block; font-family: var(--mono); font-weight: 400; font-size: 2rem; line-height: 1; letter-spacing: -.02em; color: var(--white); }
+  .spec span { display: block; margin-top: .55rem; font-family: var(--mono); font-size: .66rem; letter-spacing: .1em; text-transform: uppercase; color: var(--faint); }
 
   /* ── buttons ───────────────────────────────────────────── */
   .button {
@@ -105,8 +120,8 @@
     color: var(--text); cursor: pointer; white-space: nowrap; transition: background .15s, border-color .15s, color .15s;
   }
   .button:hover { border-color: var(--muted); color: var(--white); }
-  .button.primary { background: var(--white); border-color: var(--white); color: #000; }
-  .button.primary:hover { background: #d6d6d6; border-color: #d6d6d6; }
+  .button.primary { background: var(--c, var(--accent)); border-color: var(--c, var(--accent)); color: #000; font-weight: 600; }
+  .button.primary:hover { filter: brightness(1.12); }
   .button[aria-disabled="true"] { color: var(--faint); border-color: var(--line-2); cursor: not-allowed; }
   .button svg { width: .9rem; height: .9rem; }
   :focus-visible { outline: 1px solid var(--white); outline-offset: 2px; }
@@ -117,8 +132,8 @@
     grid-template-columns: repeat(auto-fill, minmax(min(100%, 17rem), 1fr)); margin-bottom: 2.6rem; }
   @media (min-width: 1300px) { .launcher { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
   .app { position: relative; display: flex; flex-direction: column; background: var(--bg); transition: background .2s; }
-  .app:hover { background: var(--panel); }
-  .app-thumb { position: relative; aspect-ratio: 16 / 10; background: var(--bg); border-bottom: 1px solid var(--line); overflow: hidden; }
+  .app:hover { background: color-mix(in srgb, var(--c) 7%, #000); }
+  .app-thumb { position: relative; aspect-ratio: 16 / 10; background: var(--bg); border-bottom: 2px solid var(--c); overflow: hidden; }
   .app-thumb .mock, .app-thumb img.shot { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: top left; }
   .app-body { padding: 1rem 1.1rem 1.1rem; display: flex; flex-direction: column; gap: .45rem; flex: 1; }
   .app-top { display: flex; align-items: center; gap: .75rem; }
@@ -127,7 +142,7 @@
   .app-id { font-family: var(--mono); font-size: .7rem; color: var(--faint); letter-spacing: .04em; }
   .app-sub { color: var(--muted); font-size: .9rem; flex: 1; }
   .app-foot { display: flex; align-items: center; justify-content: space-between; gap: .5rem; margin-top: .5rem; padding-top: .7rem; border-top: 1px solid var(--line); }
-  .app-open { display: inline-flex; align-items: center; gap: .45rem; font-family: var(--mono); font-size: .78rem; letter-spacing: .06em; text-transform: uppercase; color: var(--white); }
+  .app-open { display: inline-flex; align-items: center; gap: .45rem; font-family: var(--mono); font-size: .78rem; letter-spacing: .06em; text-transform: uppercase; color: var(--c); font-weight: 500; }
   .app-open svg { width: .85rem; height: .85rem; transition: transform .2s; }
   .app:hover .app-open svg { transform: translate(2px, -2px); }
   .app-open.off { color: var(--faint); }
@@ -136,8 +151,8 @@
   .app-link::after { content: ""; position: absolute; inset: 0; z-index: 1; } /* whole card opens the app */
 
   /* ── tool sections ─────────────────────────────────────── */
-  .tool { border: 1px solid var(--line); border-radius: var(--radius); margin-bottom: 1.5rem; scroll-margin-top: 1rem; background: var(--bg); }
-  .tool-head { display: flex; align-items: center; gap: .9rem; padding: 1rem 1.25rem; border-bottom: 1px solid var(--line); }
+  .tool { border: 1px solid var(--line); border-top: 2px solid var(--c); border-radius: var(--radius); margin-bottom: 1.5rem; scroll-margin-top: 5rem; background: var(--bg); }
+  .tool-head { display: flex; align-items: center; gap: .9rem; padding: 1rem 1.25rem; border-bottom: 1px solid var(--line); background: linear-gradient(90deg, color-mix(in srgb, var(--c) 12%, #000), #000 55%); }
   .tool-head .app-icon { width: 2.6rem; height: 2.6rem; }
   .tool-head h2 { font-size: 1.3rem; color: var(--white); line-height: 1.2; }
   .tool-head .kicker { font-family: var(--mono); font-size: .72rem; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); margin-top: .15rem; }
@@ -150,18 +165,18 @@
   .stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border: 1px solid var(--line-2); border-radius: var(--radius); margin-bottom: 1.3rem; }
   .stat { padding: .7rem .85rem; border-left: 1px solid var(--line-2); }
   .stat:first-child { border-left: 0; }
-  .stat-value { font-family: var(--mono); font-size: 1.15rem; font-weight: 500; color: var(--white); line-height: 1.25; }
+  .stat-value { font-family: var(--mono); font-size: 1.15rem; font-weight: 500; color: var(--c); line-height: 1.25; }
   .stat-sub { font-size: .76rem; color: var(--muted); line-height: 1.35; margin-top: .2rem; }
   .features { list-style: none; padding: 0; margin: 0 0 1.3rem; display: grid; gap: 0; border-top: 1px solid var(--line); }
   .features li { display: grid; grid-template-columns: 2.2rem minmax(0, 1fr); gap: .3rem; padding: .7rem 0; border-bottom: 1px solid var(--line); }
-  .features .n { font-family: var(--mono); font-size: .75rem; color: var(--faint); padding-top: .15rem; }
+  .features .n { font-family: var(--mono); font-size: .75rem; color: var(--c); padding-top: .15rem; }
   .features b { display: block; font-weight: 600; color: var(--text); }
   .features span { color: var(--muted); font-size: .9rem; }
   .refs { display: flex; flex-wrap: wrap; gap: .4rem; margin: 0 0 1.3rem; }
   .refs .label { width: 100%; margin-bottom: .1rem; }
-  .ref { font-family: var(--mono); font-size: .74rem; color: var(--text); border: 1px solid var(--line-2); border-radius: 3px; padding: .15rem .5rem; background: var(--panel); }
+  .ref { font-family: var(--mono); font-size: .74rem; color: var(--text); border: 1px solid var(--line-2); border-radius: 3px; padding: .15rem .5rem; background: color-mix(in srgb, var(--c) 8%, #000); border-color: color-mix(in srgb, var(--c) 35%, var(--line-2)); }
   .button.restricted { color: var(--text); border-color: var(--line-3); border-style: dashed; cursor: default; }
-  .restricted-note { display: flex; gap: .7rem; align-items: flex-start; margin-top: 1rem; padding: .8rem .9rem; border: 1px solid var(--line-2); border-left: 2px solid var(--white); border-radius: var(--radius); background: var(--panel); }
+  .restricted-note { display: flex; gap: .7rem; align-items: flex-start; margin-top: 1rem; padding: .8rem .9rem; border: 1px solid var(--line-2); border-left: 2px solid var(--c); border-radius: var(--radius); background: color-mix(in srgb, var(--c) 7%, #000); }
   .restricted-note svg { width: 1rem; height: 1rem; flex: none; margin-top: .15rem; color: var(--white); }
   .restricted-note b { display: block; font-family: var(--mono); font-weight: 500; font-size: .72rem; letter-spacing: .08em; text-transform: uppercase; color: var(--white); margin-bottom: .2rem; }
   .restricted-note span { font-size: .88rem; color: var(--muted); }
@@ -177,7 +192,6 @@
   .shot-main { display: block; width: 100%; padding: 0; border: 0; background: var(--bg); aspect-ratio: 16 / 10; position: relative; overflow: hidden; cursor: default; }
   .shot-main.has-img { cursor: zoom-in; }
   .shot-main .mock, .shot-main img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: top left; }
-  .mock { filter: grayscale(1) contrast(1.05); }
   .mock text { font-family: var(--sans); }
   .illus { position: absolute; right: .5rem; bottom: .5rem; z-index: 1; font-family: var(--mono); font-size: .62rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); background: #000; border: 1px solid var(--line-2); border-radius: 3px; padding: .05rem .4rem; pointer-events: none; }
   .fig { display: flex; justify-content: space-between; gap: 1rem; margin-top: .55rem; font-family: var(--mono); font-size: .72rem; color: var(--faint); }
@@ -199,16 +213,19 @@
   @media (max-width: 900px) {
     .shell { grid-template-columns: minmax(0, 1fr); }
     .sidebar { position: sticky; top: 0; z-index: 20; height: auto; padding: .6rem 16px .6rem; border-right: 0; border-bottom: 1px solid var(--line); }
-    .brand { padding: .15rem 0 .6rem; }
+    .brand { height: auto; margin: 0; padding: .15rem 0 .6rem; border-bottom: 0; }
+    .topbar { display: none; }
     .brand small, .nav-label, .sidebar-foot, .nav-id { display: none; }
     .navs { display: flex; gap: .35rem; overflow-x: auto; scrollbar-width: none; margin: 0 -16px; padding: 0 16px; }
     .navs::-webkit-scrollbar { display: none; }
     .sidebar ul { display: flex; gap: .35rem; flex: none; }
     .sidebar li a { white-space: nowrap; padding: .35rem .6rem; font-size: .86rem; border-color: var(--line-2); margin: 0; }
-    .page { padding: 1.2rem 16px 2rem; }
-    .masthead h1 { font-size: 1.7rem; }
-    .spec { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-    .spec div { padding: .5rem .6rem; }
+    .page { padding: 1.6rem 16px 2rem; }
+    .masthead { gap: 1.5rem; padding-bottom: 1.6rem; margin-bottom: 1.8rem; }
+    .masthead h1 { font-size: 2rem; margin: .8rem 0 .7rem; }
+    .masthead p { font-size: 1rem; }
+    .spec b { font-size: 1.5rem; }
+    .spec div + div { padding-left: .9rem; }
     .tool { scroll-margin-top: 7rem; }
     .tool-head { flex-wrap: wrap; padding: .9rem 1rem; }
     .tool-head .button { margin-left: 0; width: 100%; }
@@ -226,7 +243,7 @@
   <aside class="sidebar">
     <a class="brand" href="#top">
       <img class="logo" src="icon.svg" alt="">
-      <span>Security Tools<small>v1 · J. Norman</small></span>
+      <span>Security Tools<small>Engineering software</small></span>
     </a>
     <nav class="navs" aria-label="Tools">
       <div class="nav-label label">Index</div>
@@ -235,26 +252,29 @@
       <ul id="nav-tools"></ul>
     </nav>
     <div class="sidebar-foot">
-      <div class="status"><span class="dot"></span><span id="status-text"></span></div>
       <span>Created by James Norman</span>
     </div>
   </aside>
 
   <main class="content">
+    <div class="topbar">
+      <div class="crumbs"><span>Security Tools</span><i></i><b>Index</b></div>
+      <div class="meta"><span>Rev <b id="rev"></b></span><span>Updated <b id="updated"></b></span><span class="live" id="live"></span></div>
+    </div>
     <div class="page" id="top">
       <header class="masthead">
         <div>
-          <div class="label">Security engineering · Software suite</div>
-          <h1>Security Tools</h1>
-          <p>A set of engineering tools for blast effects, vehicle dynamics, doorset specification and project delivery. Each one is built on published standards and checked against reference data. Select a tool to open it.</p>
+          <div class="label eyebrow">Security engineering software</div>
+          <h1>Engineering tools for <em>security design.</em></h1>
+          <p>Blast effects, vehicle dynamics, doorset specification and project delivery. Each tool is built on published standards and checked against reference data. Select a tool to open it.</p>
         </div>
         <div class="spec" id="spec"></div>
       </header>
 
-      <div class="section-head"><span class="label">Open a tool</span><span class="label" style="color:var(--faint)">Click a card to launch</span></div>
+      <div class="section-head"><span class="label">01 · Open a tool</span></div>
       <div class="launcher" id="launcher"></div>
 
-      <div class="section-head"><span class="label">Tool reference</span></div>
+      <div class="section-head"><span class="label">02 · Tool reference</span></div>
       <div id="tools"></div>
 
       <footer class="page-foot">
@@ -281,6 +301,7 @@
    ========================================================================= */
 const TOOLS = [
   {
+    colors: ["#ff5a5f", "#ff8a3d"],
     id: "blast", code: "T-01",
     name: "Blast Calculator",
     short: "Airblast effects on buildings and people.",
@@ -305,6 +326,7 @@ const TOOLS = [
     ],
   },
   {
+    colors: ["#5b8cff", "#a28bff"],
     id: "vda", code: "T-02",
     name: "VDA-Tool",
     short: "Vehicle dynamics assessment for hostile vehicle mitigation.",
@@ -329,6 +351,7 @@ const TOOLS = [
     ],
   },
   {
+    colors: ["#1fc8a5", "#5b8cff"],
     id: "door", code: "T-03",
     name: "Door Configurator",
     short: "Compliant doorset selection, backed by test evidence.",
@@ -353,6 +376,7 @@ const TOOLS = [
     ],
   },
   {
+    colors: ["#f5a524", "#ff6b5a"],
     id: "tracker", code: "T-04",
     name: "Project Tracker",
     short: "Time, projects, Gantt charts and proposals.",
@@ -398,7 +422,8 @@ const T = (x, y, s, size = 11, fill = "var(--ui-text)", w = 500, anchor = "start
   `<text x="${x}" y="${y}" font-size="${size}" fill="${fill}" font-weight="${w}" text-anchor="${anchor}">${s}</text>`;
 const bar = (x, y, w, h = 8, fill = "var(--ui-line)", r = 2) => `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${r}" fill="${fill}"/>`;
 const panel = (x, y, w, h) => `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="4" fill="var(--ui-panel)" stroke="var(--ui-line)"/>`;
-const A = "#f0f0f0", B = "#9a9a9a", C = "#5e5e5e";
+let A = "#f0f0f0", B = "#9a9a9a";
+const C = "#5e5e5e";
 
 const MOCKS = {
   blast: () => {
@@ -421,7 +446,7 @@ const MOCKS = {
       ${[[130, "Severe damage"], [200, "Window breakage"], [250, "Eardrum rupture"]].map(([y, l]) => `<line x1="330" y1="${y}" x2="764" y2="${y}" stroke="${B}" stroke-dasharray="4 4"/>${T(762, y - 5, l, 8.5, B, 500, "end")}`).join("")}
       <polyline points="${pts.join(" ")}" fill="none" stroke="${A}" stroke-width="2.2"/>
       ${panel(316, 332, 464, 150)} ${T(332, 358, "People in the open", 12, "var(--ui-text)", 600)}
-      ${[["Killed", 8], ["Serious injury", 22], ["Minor injury", 41], ["Uninjured", 29]].map(([l, v], i) => `${T(332, 386 + i * 24, l, 9.5, "var(--ui-dim)")}${bar(430, 378 + i * 24, 330, 9, "#000", 2)}${bar(430, 378 + i * 24, 330 * v / 45, 9, [A, "#c8c8c8", B, C][i], 2)}${T(764, 386 + i * 24, v + "%", 9.5, "var(--ui-text)", 600, "end")}`).join("")}`;
+      ${[["Killed", 8], ["Serious injury", 22], ["Minor injury", 41], ["Uninjured", 29]].map(([l, v], i) => `${T(332, 386 + i * 24, l, 9.5, "var(--ui-dim)")}${bar(430, 378 + i * 24, 330, 9, "#000", 2)}${bar(430, 378 + i * 24, 330 * v / 45, 9, [A, B, "#f5b83d", "#3ddc84"][i], 2)}${T(764, 386 + i * 24, v + "%", 9.5, "var(--ui-text)", 600, "end")}`).join("")}`;
   },
   vda: () => {
     const route = "M60 440 L60 330 Q60 270 120 270 L230 270 Q290 270 290 210 L290 120";
@@ -468,25 +493,28 @@ const MOCKS = {
       ${[["Utilisation", "86%"], ["Hours this week", "152"], ["Pipeline", "£1.4m"]].map(([l, v], i) => `<rect x="${470 + i * 106}" y="26" width="98" height="42" rx="3" fill="var(--ui-panel)" stroke="var(--ui-line)"/>${T(480 + i * 106, 42, l, 8.5, "var(--ui-dim)")}${T(480 + i * 106, 60, v, 12, A, 600)}`).join("")}
       ${months.map((m, i) => `${T(gx + i * gw + gw / 2, 100, m, 9, "var(--ui-dim)", 500, "middle")}<line x1="${gx + i * gw}" y1="110" x2="${gx + i * gw}" y2="470" stroke="var(--ui-line)"/>`).join("")}
       <line x1="${gx + 0.6 * gw}" y1="106" x2="${gx + 0.6 * gw}" y2="470" stroke="${A}" stroke-width="1"/><circle cx="${gx + 0.6 * gw}" cy="106" r="3" fill="${A}"/>
-      ${rows.map(([n, s, e], i) => { const y = 122 + i * 48, w = (e - s) * gw - 6; return `<line x1="160" y1="${y + 40}" x2="780" y2="${y + 40}" stroke="var(--ui-line)" stroke-opacity=".7"/>${T(170, y + 23, n, 10, "var(--ui-text)", 400)}<rect x="${gx + s * gw + 3}" y="${y + 10}" width="${w}" height="20" rx="2" fill="#2a2a2a" stroke="${C}"/><rect x="${gx + s * gw + 3}" y="${y + 10}" width="${w * (0.3 + (i % 3) * 0.2)}" height="20" rx="2" fill="${B}"/>`; }).join("")}`;
+      ${rows.map(([n, s, e], i) => { const y = 122 + i * 48, w = (e - s) * gw - 6; return `<line x1="160" y1="${y + 40}" x2="780" y2="${y + 40}" stroke="var(--ui-line)" stroke-opacity=".7"/>${T(170, y + 23, n, 10, "var(--ui-text)", 400)}<rect x="${gx + s * gw + 3}" y="${y + 10}" width="${w}" height="20" rx="2" fill="#1c1c1c" stroke="#333"/><rect x="${gx + s * gw + 3}" y="${y + 10}" width="${w * (0.3 + (i % 3) * 0.2)}" height="20" rx="2" fill="${[A, "#5b8cff", "#1fc8a5", B, "#a28bff"][i % 5]}"/>`; }).join("")}`;
   },
 };
-const mockSVG = t => `<svg class="mock" viewBox="0 0 800 500" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Illustration of the ${esc(t.name)} interface"><rect width="800" height="500" fill="var(--ui-bg)"/>${MOCKS[t.mock]()}</svg><span class="illus">Illustration</span>`;
+const mockSVG = t => `<svg class="mock" viewBox="0 0 800 500" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Illustration of the ${esc(t.name)} interface"><rect width="800" height="500" fill="var(--ui-bg)"/>${(([A, B] = t.colors), MOCKS[t.mock]())}</svg><span class="illus">Illustration</span>`;
 
 /* ---------- Render ---------- */
 const live = TOOLS.filter(t => t.url).length;
 const invite = TOOLS.filter(t => t.restricted).length;
-document.getElementById("status-text").textContent = `${live} web · ${invite} offline`;
+const UPDATED = "2026-11-17";   // change when the page is updated
+document.getElementById("updated").textContent = new Date(UPDATED + "T12:00:00Z").toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" });
+document.getElementById("rev").textContent = UPDATED.slice(0, 7).replace("-", ".");
+document.getElementById("live").textContent = `${live} web · ${invite} offline`;
 document.getElementById("foot-left").textContent = `© ${new Date().getFullYear()} Security Tools · Created by James Norman`;
 document.getElementById("spec").innerHTML = [[TOOLS.length, "Tools"], [TOOLS.reduce((n, t) => n + (t.refs || []).length, 0), "References"], [live, "Web apps"]]
   .map(([b, s]) => `<div><b>${String(b).padStart(2, "0")}</b><span>${s}</span></div>`).join("");
 
 document.getElementById("nav-tools").innerHTML = TOOLS.map(t =>
-  `<li><a href="#${t.id}" data-spy="${t.id}">${icon(t, "nav-ico")}${esc(t.name)}<span class="nav-id">${esc(t.code)}</span></a></li>`).join("");
+  `<li><a href="#${t.id}" data-spy="${t.id}" style="--c:${t.colors[0]}">${icon(t, "nav-ico")}${esc(t.name)}<span class="nav-id">${esc(t.code)}</span></a></li>`).join("");
 
 const openLabel = t => t.url ? (t.openLabel || "Open tool") : "Link coming soon";
 document.getElementById("launcher").innerHTML = TOOLS.map(t => `
-  <article class="app">
+  <article class="app" style="--c:${t.colors[0]}">
     <div class="app-thumb" data-thumb="${t.id}">${mockSVG(t)}</div>
     <div class="app-body">
       <div class="app-top">${icon(t, "app-icon")}<div><div class="app-name">${esc(t.name)}</div><div class="app-id">${esc(t.code)} · ${esc(t.kicker)}</div></div></div>
@@ -508,7 +536,7 @@ document.getElementById("tools").innerHTML = TOOLS.map((t, i) => {
       : `<span class="button" aria-disabled="true">Link coming soon</span>`;
   const copy = t.url && t.copyable ? `<button class="button" type="button" data-copy="${i}">${svg("copy")}<span>Copy link</span></button>` : "";
   return `
-  <section class="tool" id="${t.id}">
+  <section class="tool" id="${t.id}" style="--c:${t.colors[0]}">
     <div class="tool-head">
       ${icon(t, "app-icon")}
       <div><h2>${esc(t.name)}</h2><div class="kicker">${esc(t.code)} · ${esc(t.kicker)}</div></div>
