@@ -4,6 +4,7 @@ Landing page (`index.html`) that showcases and links to:
 
 | Tool              | Link                                      |
 |-------------------|-------------------------------------------|
+| Risk & Threat Assessment | https://risk-threat-assessment-tool-five.vercel.app |
 | Blast Calculator  | https://blast-tool-one.vercel.app         |
 | VDA-Tool          | https://vda-tool.vercel.app               |
 | Door Configurator | https://door-configurator-beta.vercel.app |

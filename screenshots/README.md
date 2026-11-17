@@ -5,6 +5,7 @@ drawn preview (marked "Illustration"); the real image replaces it automatically.
 
 | Tool              | Files                                |
 |-------------------|--------------------------------------|
+| Risk & Threat     | `rta-1.png`, `rta-2.png`             |
 | Blast Calculator  | `blast-1.png`, `blast-2.png`         |
 | VDA-Tool          | `vda-1.png`, `vda-2.png`             |
 | Door Configurator | `door-1.png`, `door-2.png`           |

@@ -4,11 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Security Tools</title>
-<meta name="description" content="Security Tools: engineering software for blast effects, vehicle dynamics, doorset specification and project delivery. Created by James Norman.">
+<meta name="description" content="Security Tools: engineering software for risk and threat assessment, blast effects, vehicle dynamics, doorset specification and project delivery. Created by James Norman.">
 <meta name="theme-color" content="#000000">
 <meta name="color-scheme" content="dark">
 <meta property="og:title" content="Security Tools">
-<meta property="og:description" content="Blast Calculator, VDA-Tool, Door Configurator and Project Tracker.">
+<meta property="og:description" content="Risk & Threat Assessment, Blast Calculator, VDA-Tool, Door Configurator and Project Tracker.">
 <link rel="icon" type="image/svg+xml" href="icon.svg">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -82,7 +82,7 @@
   .nav-ico { width: 1.25rem; height: 1.25rem; flex: none; border-radius: 3px; box-shadow: 0 0 0 1px var(--line-2); }
   .nav-ico.grid { display: grid; place-items: center; box-shadow: none; color: currentColor; }
   .nav-ico.grid svg { width: 1rem; height: 1rem; }
-  .nav-id { margin-left: auto; font-family: var(--mono); font-size: .7rem; color: var(--faint); }
+  .nav-id { white-space: nowrap; margin-left: auto; font-family: var(--mono); font-size: .7rem; color: var(--faint); }
   .sidebar-foot { margin-top: auto; border-top: 1px solid var(--line); padding: .9rem .6rem 0; display: grid; gap: .45rem; font-family: var(--mono); font-size: .72rem; color: var(--faint); }
   .status { display: flex; align-items: center; gap: .5rem; color: var(--muted); }
   .status .dot { width: .45rem; height: .45rem; border-radius: 50%; background: var(--ok); box-shadow: 0 0 .5rem var(--ok); }
@@ -128,10 +128,11 @@
 
   /* ── launcher ──────────────────────────────────────────── */
   .section-head { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; margin: 0 0 .8rem; }
-  .launcher { display: grid; gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden;
-    grid-template-columns: repeat(auto-fill, minmax(min(100%, 17rem), 1fr)); margin-bottom: 2.6rem; }
-  @media (min-width: 1300px) { .launcher { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
-  .app { position: relative; display: flex; flex-direction: column; background: var(--bg); transition: background .2s; }
+  .launcher { display: grid; gap: .9rem; grid-template-columns: repeat(auto-fill, minmax(min(100%, 16rem), 1fr)); margin-bottom: 2.6rem; }
+  @media (min-width: 1100px) { .launcher { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+  @media (min-width: 1700px) { .launcher { grid-template-columns: repeat(5, minmax(0, 1fr)); } }
+  .app { position: relative; display: flex; flex-direction: column; background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; transition: background .2s, border-color .2s; }
+  .app:hover { border-color: color-mix(in srgb, var(--c) 45%, var(--line)); }
   .app:hover { background: color-mix(in srgb, var(--c) 7%, #000); }
   .app-thumb { position: relative; aspect-ratio: 16 / 10; background: var(--bg); border-bottom: 2px solid var(--c); overflow: hidden; }
   .app-thumb .mock, .app-thumb img.shot { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: top left; }
@@ -276,7 +277,7 @@
         <div>
           <div class="label eyebrow">Security engineering software</div>
           <h1>Engineering tools for <em>security design.</em></h1>
-          <p>Blast effects, vehicle dynamics, doorset specification and project delivery. Each tool is built on published standards and checked against reference data. Select a tool to open it.</p>
+          <p>Risk and threat assessment, blast effects, vehicle dynamics, doorset specification and project delivery. Each tool is built on published standards and checked against reference data. Select a tool to open it.</p>
         </div>
         <div class="spec" id="spec"></div>
       </header>
@@ -311,8 +312,34 @@
    ========================================================================= */
 const TOOLS = [
   {
+    colors: ["#b07cff", "#ff6bd6"],
+    id: "rta", code: "T-01",
+    name: "Risk & Threat Assessment",
+    navName: "Risk & Threat",
+    short: "Structured security risk, threat and treatment assessment.",
+    kicker: "Security risk assessment",
+    icon: "icons/apps/rta.svg",
+    mock: "rta",
+    tagline: "From site context to a treated risk register, step by step.",
+    description: "A structured security risk and threat assessment, from site context and local crime through assets, threats, vulnerability and impact to a risk register, residual risk and treatments. It follows ISO 31000 risk-management principles and produces a report ready to issue.",
+    stats: [["16", "assessment sections"], ["5 × 5", "likelihood × consequence matrix"], ["Live", "Martyn's Law status check"]],
+    features: [
+      ["Guided assessment workflow", "Context, crime and terrorism, assets, threats, attractiveness, vulnerability and likelihood, impact, existing controls, then residual risk and treatments."],
+      ["Risk register and Design Basis Threat", "Scores every threat on a 5 × 5 matrix, records the Design Basis Threat and shows residual risk after treatments."],
+      ["Local intelligence", "Police.uk crime data and points of interest around the site, plus a live check on the Terrorism (Protection of Premises) Act 2025 (Martyn's Law)."],
+      ["Report-ready", "Secured by Design requirements, a threat and treatment library, and a full Word report export."],
+    ],
+    refs: ["ISO 31000", "Martyn's Law (2025 Act)", "Secured by Design", "PAS 24", "Police.uk"],
+    url: "https://risk-threat-assessment-tool-five.vercel.app",
+    note: "Opens in the browser and can be installed as an app.",
+    screenshots: [
+      { src: "screenshots/rta-1.png", caption: "Risk register and matrix" },
+      { src: "screenshots/rta-2.png", caption: "Context and criteria" },
+    ],
+  },
+  {
     colors: ["#ff5a5f", "#ff8a3d"],
-    id: "blast", code: "T-01",
+    id: "blast", code: "T-02",
     name: "Blast Calculator",
     short: "Airblast effects on buildings and people.",
     kicker: "Blast effects",
@@ -337,7 +364,7 @@ const TOOLS = [
   },
   {
     colors: ["#5b8cff", "#a28bff"],
-    id: "vda", code: "T-02",
+    id: "vda", code: "T-03",
     name: "VDA-Tool",
     short: "Vehicle dynamics assessment for hostile vehicle mitigation.",
     kicker: "Hostile vehicle mitigation",
@@ -362,7 +389,7 @@ const TOOLS = [
   },
   {
     colors: ["#1fc8a5", "#5b8cff"],
-    id: "door", code: "T-03",
+    id: "door", code: "T-04",
     name: "Door Configurator",
     short: "Compliant doorset selection, backed by test evidence.",
     kicker: "Doorset specification",
@@ -387,7 +414,7 @@ const TOOLS = [
   },
   {
     colors: ["#f5a524", "#ff6b5a"],
-    id: "tracker", code: "T-04",
+    id: "tracker", code: "T-05",
     name: "Project Tracker",
     short: "Time, projects, Gantt charts and proposals.",
     kicker: "Project delivery · Offline",
@@ -438,6 +465,28 @@ let A = "#f0f0f0", B = "#9a9a9a";
 const C = "#5e5e5e";
 
 const MOCKS = {
+  rta: () => {
+    const sev = s => s >= 9 ? "#c0392b" : s >= 7 ? "#e67e22" : s >= 5 ? "#f1c40f" : s >= 3 ? "#8bc34a" : "#2ecc71";
+    const secs = ["Context", "Crime & Terrorism", "Assets", "Threats", "Vulnerability", "Impact", "Controls", "Risk Register", "Residual Risk", "Summary"];
+    const mx = 190, my = 92, cs = 44;
+    const dots = [[3, 4, "T1"], [4, 3, "T2"], [2, 4, "T3"], [3, 2, "T4"], [1, 3, "T5"]];
+    const rows = [["T1", "Vehicle-borne IED", 4, 5], ["T2", "Marauding attack", 3, 5], ["T3", "Forced entry", 4, 3], ["T4", "Hostile reconnaissance", 3, 2], ["T5", "Anti-social behaviour", 4, 1]];
+    return `
+      <rect x="0" y="0" width="160" height="500" fill="var(--ui-panel)"/><line x1="160" y1="0" x2="160" y2="500" stroke="var(--ui-line)"/>
+      <rect x="16" y="18" width="26" height="26" rx="5" fill="${A}"/>${T(29, 35, "RTA", 8.5, "#000", 700, "middle")}${T(50, 35, "Assessment", 11, "var(--ui-text)", 600)}
+      ${secs.map((s, i) => `${i === 7 ? `<rect x="10" y="${62 + i * 30}" width="140" height="24" rx="3" fill="${A}" fill-opacity=".14" stroke="${A}" stroke-opacity=".5"/>` : ""}<circle cx="24" cy="${74 + i * 30}" r="4" fill="${i < 7 ? "#3ddc84" : i === 7 ? A : "var(--ui-line)"}"/>${T(36, 78 + i * 30, s, 9.5, i === 7 ? A : "var(--ui-dim)", i === 7 ? 600 : 400)}`).join("")}
+      ${T(180, 40, "Risk register", 15, "var(--ui-text)", 600)} ${T(180, 58, "Hospital campus · UK", 9.5, "var(--ui-dim)")}
+      <rect x="600" y="26" width="180" height="30" rx="3" fill="none" stroke="#e67e22"/>${T(612, 45, "UK THREAT LEVEL", 8.5, "var(--ui-dim)", 600)}${T(770, 45, "SUBSTANTIAL", 9.5, "#e67e22", 700, "end")}
+      ${[...Array(5)].map((_, r) => [...Array(5)].map((_, c) => { const L = 5 - r, C = c + 1; return `<rect x="${mx + c * cs}" y="${my + r * cs}" width="${cs - 3}" height="${cs - 3}" rx="2" fill="${sev(L + C)}" fill-opacity=".8"/>`; }).join("")).join("")}
+      ${dots.map(([L, C, id]) => `<circle cx="${mx + (C - 1) * cs + cs / 2 - 1.5}" cy="${my + (5 - L) * cs + cs / 2 - 1.5}" r="11" fill="#000" stroke="#fff" stroke-width="1.5"/>${T(mx + (C - 1) * cs + cs / 2 - 1.5, my + (5 - L) * cs + cs / 2 + 2, id, 8, "#fff", 700, "middle")}`).join("")}
+      ${T(mx + 2.5 * cs, my + 5 * cs + 18, "Consequence →", 9, "var(--ui-dim)", 500, "middle")}
+      <text x="${mx - 12}" y="${my + 2.5 * cs}" font-size="9" fill="var(--ui-dim)" text-anchor="middle" transform="rotate(-90 ${mx - 12} ${my + 2.5 * cs})">Likelihood →</text>
+      ${panel(430, 72, 350, 410)} ${T(446, 98, "Threats", 12, "var(--ui-text)", 600)} ${T(764, 98, "L × C", 9.5, "var(--ui-dim)", 500, "end")}
+      ${rows.map(([id, n, L, C], i) => { const y = 112 + i * 52, s = L + C; const lab = s >= 9 ? "Extreme" : s >= 7 ? "High" : s >= 5 ? "Medium" : "Low"; return `<line x1="446" y1="${y}" x2="764" y2="${y}" stroke="var(--ui-line)"/>${T(446, y + 22, id, 9.5, A, 700)}${T(472, y + 22, n, 10, "var(--ui-text)", 500)}${T(472, y + 38, "Residual after treatment", 8.5, "var(--ui-dim)")}<rect x="682" y="${y + 11}" width="62" height="18" rx="3" fill="${sev(s)}" fill-opacity=".9"/>${T(713, y + 24, lab, 8.5, "#000", 700, "middle")}${T(764, y + 24, L * C, 9.5, "var(--ui-text)", 600, "end")}`; }).join("")}
+      ${panel(180, 360, 236, 122)} ${T(196, 384, "Martyn's Law", 11, "var(--ui-text)", 600)} ${T(196, 402, "Terrorism (Protection of Premises) Act 2025", 8, "var(--ui-dim)")}
+      <rect x="196" y="414" width="96" height="20" rx="3" fill="none" stroke="#f1c40f"/>${T(244, 428, "Partly in force", 8.5, "#f1c40f", 700, "middle")}
+      ${T(196, 456, "Enhanced duty · 800+ capacity", 9, "var(--ui-text)")}${T(196, 472, "Checked against legislation.gov.uk", 8, "var(--ui-dim)")}`;
+  },
   blast: () => {
     const pts = []; for (let i = 0; i <= 40; i++) { const x = 330 + i * 10.5; const y = 120 + 260 * (1 - Math.exp(-i / 9)); pts.push(`${x.toFixed(1)},${y.toFixed(1)}`); }
     const rings = [90, 66, 44, 24].map((r, i) => `<circle cx="160" cy="390" r="${r}" fill="#fff" fill-opacity="${[.03, .06, .1, .18][i]}" stroke="${B}" stroke-dasharray="${i ? "" : "3 3"}"/>`).join("");
@@ -522,7 +571,7 @@ document.getElementById("spec").innerHTML = [[TOOLS.length, "Tools"], [TOOLS.red
   .map(([b, s]) => `<div><b>${String(b).padStart(2, "0")}</b><span>${s}</span></div>`).join("");
 
 document.getElementById("nav-tools").innerHTML = TOOLS.map(t =>
-  `<li><a href="#${t.id}" data-spy="${t.id}" style="--c:${t.colors[0]}">${icon(t, "nav-ico")}${esc(t.name)}<span class="nav-id">${esc(t.code)}</span></a></li>`).join("");
+  `<li><a href="#${t.id}" data-spy="${t.id}" style="--c:${t.colors[0]}">${icon(t, "nav-ico")}${esc(t.navName || t.name)}<span class="nav-id">${esc(t.code)}</span></a></li>`).join("");
 
 const openLabel = t => t.url ? (t.openLabel || "Open tool") : "Link coming soon";
 document.getElementById("launcher").innerHTML = TOOLS.map(t => `
