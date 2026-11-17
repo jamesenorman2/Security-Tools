@@ -356,23 +356,23 @@ const TOOLS = [
     id: "tracker", code: "T-04",
     name: "Project Tracker",
     short: "Time, projects, Gantt charts and proposals.",
-    kicker: "Project delivery · Secure",
+    kicker: "Project delivery · Offline",
     icon: "icons/apps/tracker.svg",
     mock: "tracker",
     tagline: "Time, projects, Gantt charts and proposals in one file.",
-    description: "A secure, invite-only app for the team's time, projects, Gantt charts and proposals. All company data is encrypted and stored on the company's own servers in the team's shared folder. Nothing is held online, and the app can't connect to the internet.",
-    stats: [["Invite", "access by admin invitation"], ["0", "internet connections"], ["AES-256", "encrypted records"]],
+    description: "An offline, totally secure app for the team's time, projects, Gantt charts and proposals. It is not meant to be online: it runs from the AECOM server, all company data is encrypted and stays there, and the app can't connect to the internet. Access is by invitation only.",
+    stats: [["Offline", "runs from the AECOM server"], ["0", "internet connections"], ["AES-256", "encrypted records"]],
     features: [
       ["Timesheets and hours", "Record time, import hours and track utilisation across the team."],
       ["Projects and Gantt", "Project setup, progress, earned value, fee adjustments and a team board."],
       ["Proposals and pipeline", "Track bids from enquiry to award, with pipeline reports you can export to Word and Excel."],
-      ["Private by design", "Data stays in the team folder, encrypted, with no network access. Admin roles and a recovery code protect pay rates and settings."],
+      ["Private by design", "Data stays on the AECOM server, encrypted, with no network access. Access is by invitation, and admin roles and a recovery code protect pay rates and settings."],
     ],
-    refs: ["Invite only", "AES-256-GCM", "No internet access"],
+    refs: ["Offline only", "AECOM server", "Invite only", "AES-256-GCM"],
     url: "",
     // No public link: shown instead of an Open button.
-    restricted: "Invite only",
-    restrictedNote: "No link is available because this is a secure app. All company data is stored securely on the company server, and access is by invitation only. Ask an admin for an invite.",
+    restricted: "Offline only",
+    restrictedNote: "Project Tracker is not meant to be online. It is an offline, totally secure app that runs from the AECOM server, so there is no web link. Access is by invitation only: ask an admin for an invite.",
     screenshots: [
       { src: "screenshots/tracker-1.png", caption: "Gantt view" },
       { src: "screenshots/tracker-2.png", caption: "Dashboard" },
@@ -476,7 +476,7 @@ const mockSVG = t => `<svg class="mock" viewBox="0 0 800 500" preserveAspectRati
 /* ---------- Render ---------- */
 const live = TOOLS.filter(t => t.url).length;
 const invite = TOOLS.filter(t => t.restricted).length;
-document.getElementById("status-text").textContent = `${live} web · ${invite} invite-only`;
+document.getElementById("status-text").textContent = `${live} web · ${invite} offline`;
 document.getElementById("foot-left").textContent = `© ${new Date().getFullYear()} Security Tools · Created by James Norman`;
 document.getElementById("spec").innerHTML = [[TOOLS.length, "Tools"], [TOOLS.reduce((n, t) => n + (t.refs || []).length, 0), "References"], [live, "Web apps"]]
   .map(([b, s]) => `<div><b>${String(b).padStart(2, "0")}</b><span>${s}</span></div>`).join("");
@@ -530,7 +530,7 @@ document.getElementById("tools").innerHTML = TOOLS.map((t, i) => {
         <ul class="features">${(t.features || []).map(([h, d], j) => `<li><span class="n">${String(j + 1).padStart(2, "0")}</span><div><b>${esc(h)}</b><span>${esc(d)}</span></div></li>`).join("")}</ul>
         ${t.refs ? `<div class="refs"><span class="label">References</span>${t.refs.map(r => `<span class="ref">${esc(r)}</span>`).join("")}</div>` : ""}
         <div class="actions">${open}${copy}</div>
-        ${t.restrictedNote ? `<div class="restricted-note">${svg("lock", 2)}<div><b>Why there's no link</b><span>${esc(t.restrictedNote)}</span></div></div>` : ""}
+        ${t.restrictedNote ? `<div class="restricted-note">${svg("lock", 2)}<div><b>Not available online</b><span>${esc(t.restrictedNote)}</span></div></div>` : ""}
         ${t.note ? `<div class="note">${svg(t.url ? "lock" : "info")}<span>${esc(t.note)}</span></div>` : ""}
       </div>
     </div>

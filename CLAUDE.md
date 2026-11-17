@@ -11,5 +11,6 @@
   app icon from `icons/apps/` (copied from that app's repo: Blast `icons/icon.svg`, VDA
   `icons/icon.svg`, Door `src/app/favicon.ico`, Project Tracker `index.html` favicon). Re-copy when
   an app's icon changes.
-- Project Tracker has no link: it is invite-only, with company data stored on the company server.
+- Project Tracker has no link: it is not meant to be online. It is an offline, totally secure app
+  that runs from the AECOM server, invite-only.
 - Check layouts at phone (390px), 1366, 1920 and 3840 widths with no horizontal scroll.

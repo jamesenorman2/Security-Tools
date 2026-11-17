@@ -7,7 +7,7 @@ Landing page (`index.html`) that showcases and links to:
 | Blast Calculator  | https://blast-tool-one.vercel.app         |
 | VDA-Tool          | https://vda-tool.vercel.app               |
 | Door Configurator | https://door-configurator-beta.vercel.app |
-| Project Tracker   | Invite only (no public link)              |
+| Project Tracker   | Offline only: runs from the AECOM server  |
 
 Pure black, monochrome design with each tool's own app icon. Works from phone to 4K.
 
