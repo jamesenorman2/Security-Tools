@@ -8,7 +8,9 @@
 <meta name="theme-color" content="#161b26">
 <meta property="og:title" content="Security Tools">
 <meta property="og:description" content="Blast Calculator, VDA-Tool, Door Configurator and Project Tracker.">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%232f5bd3'/%3E%3Cpath d='M16 7 9 10v5c0 4.2 3 7.7 7 8.5 4-.8 7-4.3 7-8.5v-5l-7-3Z' fill='none' stroke='%23fff' stroke-width='2.2' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="icon" type="image/svg+xml" href="icon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <style>
   /* Visual language matches Project Tracker: dark sidebar, light panels,
      Segoe UI, 10px radius, blue accent, follows the system dark mode. */
@@ -82,8 +84,8 @@
   }
   .brand { display: flex; gap: .7rem; align-items: center; padding: .25rem .55rem 1.1rem; color: #fff; font-weight: 700; font-size: 1.05rem; text-decoration: none; }
   .brand small { display: block; font-weight: 400; color: var(--sidebar-text); font-size: .8rem; }
-  .logo { display: inline-grid; place-items: center; width: 2rem; height: 2rem; border-radius: .55rem; background: #2f5bd3; color: #fff; flex: none; }
-  .logo svg { width: 1.15rem; height: 1.15rem; }
+  .logo { display: inline-grid; place-items: center; width: 2rem; height: 2rem; border-radius: .55rem; background: #000; color: #fff; flex: none; box-shadow: inset 0 0 0 1px rgba(255,255,255,.28); }
+  .logo svg { width: 1.3rem; height: 1.3rem; }
   .nav-label { font-size: .72rem; font-weight: 600; text-transform: uppercase; letter-spacing: .08em; opacity: .55; padding: .9rem .7rem .35rem; }
   .sidebar ul { list-style: none; padding: 0; margin: 0; }
   .sidebar li a {
@@ -247,7 +249,7 @@
 <div class="shell">
   <aside class="sidebar">
     <a class="brand" href="#top">
-      <span class="logo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><path d="M12 3 5 6v5c0 4.2 3 7.7 7 8.5 4-.8 7-4.3 7-8.5V6l-7-3Z"/></svg></span>
+      <span class="logo"><svg viewBox="5 6 22 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12.5 11.5V9a1.5 1.5 0 0 1 1.5-1.5h4A1.5 1.5 0 0 1 19.5 9v2.5"/><rect x="5.5" y="11.5" width="21" height="13.5" rx="2"/><path d="M5.5 17.5h21"/><rect x="14" y="15.5" width="4" height="4" rx=".8" fill="#000"/></svg></span>
       <span>Security Tools<small>Made by James Norman</small></span>
     </a>
     <nav class="navs" aria-label="Tools">
