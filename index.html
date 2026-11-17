@@ -1,0 +1,586 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tool Suite</title>
+<meta name="description" content="A suite of internal tools: BLAST Tool, Blast Calculator, VDA-Tool, Door Configurator and Project Tracker.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  /* =====================================================================
+     All content (names, descriptions, links, screenshots) is edited in
+     the TOOLS config inside the <script> block at the bottom of the file.
+     ===================================================================== */
+  :root {
+    --bg: #070910;
+    --bg-2: #0c1019;
+    --surface: rgba(255,255,255,0.04);
+    --surface-strong: #121725;
+    --border: rgba(255,255,255,0.09);
+    --text: #eef1f7;
+    --muted: #9aa3b5;
+    --faint: #6b7385;
+    --accent: #7c9cff;
+    --accent-2: #b48cff;
+    --btn-text: #070910;
+    --glow: rgba(124,156,255,0.35);
+    --grid-line: rgba(255,255,255,0.035);
+    --shadow: 0 30px 80px -20px rgba(0,0,0,0.7);
+    color-scheme: dark;
+  }
+  :root[data-theme="light"] {
+    --bg: #f7f8fc;
+    --bg-2: #eef1f8;
+    --surface: rgba(255,255,255,0.75);
+    --surface-strong: #ffffff;
+    --border: rgba(15,23,42,0.10);
+    --text: #0e1322;
+    --muted: #4c566b;
+    --faint: #7a8396;
+    --accent: #3b5bdb;
+    --accent-2: #7b4ddb;
+    --btn-text: #ffffff;
+    --glow: rgba(59,91,219,0.22);
+    --grid-line: rgba(15,23,42,0.045);
+    --shadow: 0 30px 70px -25px rgba(15,23,42,0.35);
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: light) {
+    :root:not([data-theme="dark"]) {
+      --bg: #f7f8fc; --bg-2: #eef1f8; --surface: rgba(255,255,255,0.75);
+      --surface-strong: #ffffff; --border: rgba(15,23,42,0.10); --text: #0e1322;
+      --muted: #4c566b; --faint: #7a8396; --accent: #3b5bdb; --accent-2: #7b4ddb;
+      --btn-text: #ffffff; --glow: rgba(59,91,219,0.22); --grid-line: rgba(15,23,42,0.045);
+      --shadow: 0 30px 70px -25px rgba(15,23,42,0.35); color-scheme: light;
+    }
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font: 16px/1.6 "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  img { max-width: 100%; display: block; }
+  a { color: inherit; }
+  .container { width: 100%; max-width: 1180px; margin: 0 auto; padding: 0 16px; }
+  @media (min-width: 720px) { .container { padding: 0 32px; } }
+
+  /* ---------- Nav ---------- */
+  .nav {
+    position: sticky; top: 0; z-index: 50;
+    backdrop-filter: saturate(160%) blur(14px);
+    -webkit-backdrop-filter: saturate(160%) blur(14px);
+    background: color-mix(in srgb, var(--bg) 72%, transparent);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 64px; gap: 16px; }
+  .brand { display: flex; align-items: center; gap: 10px; font-weight: 700; text-decoration: none; letter-spacing: -0.01em; }
+  .brand-mark {
+    width: 30px; height: 30px; border-radius: 8px;
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    box-shadow: 0 0 24px var(--glow);
+  }
+  .nav-links { display: none; gap: 4px; }
+  .nav-links a {
+    text-decoration: none; color: var(--muted); font-size: 0.92rem; font-weight: 500;
+    padding: 6px 12px; border-radius: 8px;
+  }
+  .nav-links a:hover { color: var(--text); background: var(--surface); }
+  @media (min-width: 860px) { .nav-links { display: flex; } }
+  .theme-btn {
+    width: 38px; height: 38px; border-radius: 10px; border: 1px solid var(--border);
+    background: var(--surface); color: var(--text); cursor: pointer; display: grid; place-items: center;
+  }
+  .theme-btn svg { width: 18px; height: 18px; }
+
+  /* ---------- Hero ---------- */
+  .hero { position: relative; padding: 96px 0 72px; text-align: center; isolation: isolate; }
+  .hero::before {
+    content: ""; position: absolute; inset: 0; z-index: -2;
+    background-image:
+      linear-gradient(var(--grid-line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+    background-size: 56px 56px;
+    mask-image: radial-gradient(ellipse 70% 60% at 50% 30%, #000 30%, transparent 75%);
+    -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 30%, #000 30%, transparent 75%);
+  }
+  .hero::after {
+    content: ""; position: absolute; z-index: -1;
+    width: 720px; height: 420px; left: 50%; top: -60px; transform: translateX(-50%);
+    background: radial-gradient(closest-side, var(--glow), transparent);
+    filter: blur(20px);
+    max-width: 100vw;
+  }
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 0.8rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--accent); padding: 6px 14px; border-radius: 999px;
+    border: 1px solid var(--border); background: var(--surface);
+  }
+  .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 10px var(--accent); }
+  .hero h1 {
+    font-size: clamp(2.3rem, 6vw, 4.2rem); line-height: 1.05; letter-spacing: -0.035em;
+    font-weight: 800; margin: 22px auto 18px; max-width: 900px;
+  }
+  .gradient-text {
+    background: linear-gradient(100deg, var(--accent), var(--accent-2));
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .hero p.lead { font-size: clamp(1.05rem, 2vw, 1.25rem); color: var(--muted); max-width: 640px; margin: 0 auto; }
+  .hero-ctas { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-top: 34px; }
+
+  .quick {
+    display: grid; gap: 12px; margin-top: 64px;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    text-align: left;
+  }
+  .quick a {
+    display: flex; align-items: center; gap: 12px; text-decoration: none;
+    padding: 16px; border-radius: 14px; border: 1px solid var(--border); background: var(--surface);
+    transition: transform .2s ease, border-color .2s ease, background .2s ease;
+  }
+  .quick a:hover { transform: translateY(-3px); border-color: color-mix(in srgb, var(--accent) 50%, var(--border)); }
+  .quick .q-name { font-weight: 600; }
+  .quick .q-sub { font-size: 0.85rem; color: var(--muted); }
+
+  /* ---------- Buttons ---------- */
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    padding: 12px 22px; border-radius: 11px; font: inherit; font-weight: 600; font-size: 0.97rem;
+    text-decoration: none; cursor: pointer; border: 1px solid transparent;
+    transition: transform .15s ease, box-shadow .2s ease, background .2s ease;
+  }
+  .btn-primary {
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    color: var(--btn-text); box-shadow: 0 10px 30px -8px var(--glow);
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 16px 40px -10px var(--glow); }
+  .btn-ghost { background: var(--surface); color: var(--text); border-color: var(--border); }
+  .btn-ghost:hover { border-color: color-mix(in srgb, var(--accent) 50%, var(--border)); }
+  .btn[aria-disabled="true"] { background: var(--surface); color: var(--faint); border-color: var(--border); box-shadow: none; cursor: not-allowed; transform: none; }
+  .btn:focus-visible, .theme-btn:focus-visible, .thumb:focus-visible, .shot-main:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+  .btn svg { width: 16px; height: 16px; }
+
+  /* ---------- Tool icon ---------- */
+  .t-icon {
+    width: 44px; height: 44px; flex: none; border-radius: 12px; display: grid; place-items: center;
+    color: #fff; background: linear-gradient(135deg, var(--c1), var(--c2));
+    box-shadow: 0 8px 24px -8px var(--c1);
+  }
+  .t-icon svg { width: 22px; height: 22px; }
+
+  /* ---------- Tool showcase ---------- */
+  .tool { padding: 96px 0; border-top: 1px solid var(--border); position: relative; }
+  .tool:nth-of-type(even) { background: var(--bg-2); }
+  .tool-grid { display: grid; gap: 48px; align-items: center; }
+  @media (min-width: 960px) {
+    .tool-grid { grid-template-columns: 1fr 1.15fr; gap: 64px; }
+    .tool.flip .tool-copy { order: 2; }
+  }
+  .tool-head { display: flex; align-items: center; gap: 14px; margin-bottom: 20px; }
+  .tool-kicker { font-size: 0.8rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+  .tool h2 { font-size: clamp(1.9rem, 3.6vw, 2.6rem); line-height: 1.1; letter-spacing: -0.03em; margin: 0 0 14px; font-weight: 800; }
+  .tool .tagline { font-size: 1.15rem; color: var(--text); margin: 0 0 12px; font-weight: 500; }
+  .tool .desc { color: var(--muted); margin: 0 0 26px; }
+  .features { list-style: none; padding: 0; margin: 0 0 30px; display: grid; gap: 14px; }
+  .features li { display: flex; gap: 12px; align-items: flex-start; }
+  .check {
+    flex: none; width: 22px; height: 22px; border-radius: 6px; margin-top: 2px; display: grid; place-items: center;
+    background: color-mix(in srgb, var(--c1) 18%, transparent); color: var(--c1);
+  }
+  .check svg { width: 14px; height: 14px; }
+  .features b { display: block; font-weight: 600; }
+  .features span { color: var(--muted); font-size: 0.94rem; }
+  .tool-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+  .access-note {
+    margin-top: 16px; font-size: 0.88rem; color: var(--muted);
+    display: flex; gap: 8px; align-items: flex-start;
+  }
+  .access-note svg { width: 16px; height: 16px; flex: none; margin-top: 3px; color: var(--c1); }
+
+  /* ---------- Browser frame / screenshots ---------- */
+  .shot-wrap { position: relative; min-width: 0; }
+  .shot-wrap::before {
+    content: ""; position: absolute; inset: 8% 6%; z-index: 0;
+    background: radial-gradient(closest-side, color-mix(in srgb, var(--c1) 45%, transparent), transparent);
+    filter: blur(50px); opacity: .7;
+  }
+  .frame {
+    position: relative; z-index: 1; border-radius: 14px; overflow: hidden;
+    border: 1px solid var(--border); background: var(--surface-strong); box-shadow: var(--shadow);
+  }
+  .frame-bar {
+    display: flex; align-items: center; gap: 7px; padding: 11px 14px;
+    border-bottom: 1px solid var(--border); background: color-mix(in srgb, var(--surface-strong) 85%, var(--text) 4%);
+  }
+  .frame-bar i { width: 11px; height: 11px; border-radius: 50%; background: var(--border); }
+  .frame-bar i:nth-child(1) { background: #ff5f57; } .frame-bar i:nth-child(2) { background: #febc2e; } .frame-bar i:nth-child(3) { background: #28c840; }
+  .frame-url {
+    margin-left: 10px; flex: 1; min-width: 0; font-size: 0.75rem; color: var(--faint);
+    background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 3px 10px;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .shot-main {
+    display: block; width: 100%; padding: 0; border: 0; background: none; cursor: zoom-in;
+    aspect-ratio: 16 / 10; position: relative;
+  }
+  .shot-main img { width: 100%; height: 100%; object-fit: cover; object-position: top left; }
+  .placeholder {
+    position: absolute; inset: 0; display: grid; place-items: center; text-align: center; padding: 24px;
+    color: var(--faint); font-size: 0.9rem;
+    background:
+      radial-gradient(circle at 30% 20%, color-mix(in srgb, var(--c1) 22%, transparent), transparent 55%),
+      radial-gradient(circle at 80% 80%, color-mix(in srgb, var(--c2) 18%, transparent), transparent 55%);
+  }
+  .placeholder .ph-icon { width: 56px; height: 56px; margin: 0 auto 12px; opacity: .8; color: var(--c1); }
+  .placeholder code { font-size: 0.82rem; color: var(--muted); }
+  .thumbs { display: flex; gap: 10px; margin-top: 14px; position: relative; z-index: 1; overflow-x: auto; padding: 2px; }
+  .thumb {
+    flex: 0 0 auto; width: 96px; aspect-ratio: 16/10; border-radius: 8px; overflow: hidden; padding: 0;
+    border: 2px solid var(--border); background: var(--surface-strong); cursor: pointer; opacity: .65;
+    transition: opacity .2s, border-color .2s;
+  }
+  .thumb img { width: 100%; height: 100%; object-fit: cover; }
+  .thumb[aria-current="true"], .thumb:hover { opacity: 1; border-color: var(--c1); }
+  .caption { position: relative; z-index: 1; margin-top: 10px; font-size: 0.85rem; color: var(--faint); min-height: 1.4em; }
+
+  /* ---------- Lightbox ---------- */
+  .lightbox {
+    position: fixed; inset: 0; z-index: 100; display: none; place-items: center; padding: 24px;
+    background: rgba(3,5,10,0.88); backdrop-filter: blur(6px);
+  }
+  .lightbox.open { display: grid; }
+  .lightbox img { max-width: min(1400px, 100%); max-height: 86vh; border-radius: 10px; box-shadow: 0 30px 80px rgba(0,0,0,.6); }
+  .lightbox p { color: #c9cfdb; text-align: center; margin: 14px 0 0; font-size: 0.92rem; }
+  .lb-close {
+    position: absolute; top: 16px; right: 16px; width: 42px; height: 42px; border-radius: 10px;
+    border: 1px solid rgba(255,255,255,.2); background: rgba(255,255,255,.08); color: #fff; font-size: 22px; cursor: pointer;
+  }
+
+  /* ---------- Footer ---------- */
+  footer { border-top: 1px solid var(--border); padding: 40px 0 56px; color: var(--faint); font-size: 0.9rem; }
+  .foot { display: flex; flex-wrap: wrap; gap: 16px; justify-content: space-between; align-items: center; }
+
+  /* ---------- Reveal on scroll ---------- */
+  .reveal { opacity: 0; transform: translateY(24px); transition: opacity .7s ease, transform .7s ease; }
+  .reveal.in { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .reveal { opacity: 1; transform: none; transition: none; }
+    * { transition: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="container nav-inner">
+    <a class="brand" href="#top"><span class="brand-mark" aria-hidden="true"></span><span id="brand-name">Tool Suite</span></a>
+    <div class="nav-links" id="nav-links"></div>
+    <button class="theme-btn" id="theme-btn" type="button" aria-label="Toggle light/dark theme">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a9 9 0 1 0 9 9 7 7 0 0 1-9-9Z"/></svg>
+    </button>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <div class="container">
+    <span class="eyebrow"><span class="dot"></span><span id="hero-eyebrow"></span></span>
+    <h1 id="hero-title"></h1>
+    <p class="lead" id="hero-lead"></p>
+    <div class="hero-ctas">
+      <a class="btn btn-primary" href="#tools">Explore the tools
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12l7 7 7-7"/></svg></a>
+    </div>
+    <div class="quick" id="quick"></div>
+  </div>
+</header>
+
+<main id="tools"></main>
+
+<footer>
+  <div class="container foot">
+    <span id="footer-left"></span>
+    <span id="footer-right"></span>
+  </div>
+</footer>
+
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Screenshot preview">
+  <button class="lb-close" id="lb-close" type="button" aria-label="Close">×</button>
+  <figure style="margin:0"><img id="lb-img" alt=""><p id="lb-cap"></p></figure>
+</div>
+
+<script>
+/* =========================================================================
+   EDIT EVERYTHING BELOW THIS LINE
+   -------------------------------------------------------------------------
+   • url:          link that "Launch" opens. Leave "" to show "Link coming soon".
+   • screenshots:  put image files in the  screenshots/  folder next to this
+                   page and list them here. The first is the main image; the
+                   rest show as clickable thumbnails. A missing file shows a
+                   styled placeholder, so the page never looks broken.
+   • OneDrive:     right-click the file in OneDrive → Share → "Copy link"
+                   (choose "People in <your org>" so colleagues can open it)
+                   and paste it as the url.
+   ========================================================================= */
+const SITE = {
+  brand: "Tool Suite",
+  eyebrow: "Internal tools",
+  title: 'Everything you need, <span class="gradient-text">in one place.</span>',
+  lead: "Purpose-built tools that speed up analysis, configuration and delivery. Pick a tool below to see what it does and launch it.",
+  footerLeft: "© " + new Date().getFullYear() + " Tool Suite",
+  footerRight: "Need access or found an issue? Get in touch.",
+};
+
+const TOOLS = [
+  {
+    id: "blast",
+    name: "BLAST Tool",
+    kicker: "Analysis",
+    icon: "bolt",
+    colors: ["#ff7a45", "#ff3d77"],
+    tagline: "Fast, focused results from a single input.",
+    description: "Replace this with a 2–3 sentence summary of what the BLAST Tool does, who it's for, and the problem it solves.",
+    features: [
+      ["Headline feature one", "One line explaining the benefit to the user."],
+      ["Headline feature two", "One line explaining the benefit to the user."],
+      ["Headline feature three", "One line explaining the benefit to the user."],
+    ],
+    url: "",
+    screenshots: [
+      { src: "screenshots/blast-1.png", caption: "Main dashboard" },
+      { src: "screenshots/blast-2.png", caption: "Results view" },
+    ],
+  },
+  {
+    id: "blast-calc",
+    name: "Blast Calculator",
+    kicker: "Calculation",
+    icon: "calc",
+    colors: ["#e8455a", "#f59e0b"],
+    tagline: "Accurate numbers in seconds, not spreadsheets.",
+    description: "Replace this with a 2–3 sentence summary of what the Blast Calculator does, who it's for, and the problem it solves.",
+    features: [
+      ["Headline feature one", "One line explaining the benefit to the user."],
+      ["Headline feature two", "One line explaining the benefit to the user."],
+      ["Headline feature three", "One line explaining the benefit to the user."],
+    ],
+    url: "",
+    screenshots: [
+      { src: "screenshots/blast-calc-1.png", caption: "Calculator inputs" },
+      { src: "screenshots/blast-calc-2.png", caption: "Calculated results" },
+    ],
+  },
+  {
+    id: "vda",
+    name: "VDA-Tool",
+    kicker: "Assessment",
+    icon: "shield",
+    colors: ["#7c9cff", "#b48cff"],
+    tagline: "Clear findings, prioritised and ready to act on.",
+    description: "Replace this with a 2–3 sentence summary of what the VDA-Tool does, who it's for, and the problem it solves.",
+    features: [
+      ["Headline feature one", "One line explaining the benefit to the user."],
+      ["Headline feature two", "One line explaining the benefit to the user."],
+      ["Headline feature three", "One line explaining the benefit to the user."],
+    ],
+    url: "",
+    screenshots: [
+      { src: "screenshots/vda-1.png", caption: "Overview" },
+      { src: "screenshots/vda-2.png", caption: "Detail view" },
+    ],
+  },
+  {
+    id: "door",
+    name: "Door Configurator",
+    kicker: "Configuration",
+    icon: "door",
+    colors: ["#22c3a6", "#2f8cff"],
+    tagline: "Configure the right door, correctly, the first time.",
+    description: "Replace this with a 2–3 sentence summary of what the Door Configurator does, who it's for, and the problem it solves.",
+    features: [
+      ["Headline feature one", "One line explaining the benefit to the user."],
+      ["Headline feature two", "One line explaining the benefit to the user."],
+      ["Headline feature three", "One line explaining the benefit to the user."],
+    ],
+    url: "",
+    screenshots: [
+      { src: "screenshots/door-1.png", caption: "Configuration builder" },
+      { src: "screenshots/door-2.png", caption: "Summary & output" },
+    ],
+  },
+  {
+    id: "tracker",
+    name: "Project Tracker",
+    kicker: "Delivery · OneDrive",
+    icon: "list",
+    colors: ["#f5b83d", "#f07b2f"],
+    tagline: "Every project, owner and next step at a glance.",
+    description: "A live tracker kept on OneDrive that shows the status of every active project, who owns it and what happens next.",
+    features: [
+      ["Single source of truth", "One shared file, always up to date."],
+      ["Clear ownership", "Every item has an owner and a next action."],
+      ["Status at a glance", "See what's on track, at risk or blocked."],
+    ],
+    url: "",
+    copyable: true,
+    note: "Opens in OneDrive. Sign in with your work account if prompted.",
+    screenshots: [
+      { src: "screenshots/tracker-1.png", caption: "Project overview" },
+    ],
+  },
+];
+/* ======================= END OF EDITABLE CONTENT ======================= */
+
+const ICONS = {
+  bolt:   '<path d="M13 2 4 14h7l-1 8 9-12h-7l1-8Z"/>',
+  shield: '<path d="M12 3 4 6v6c0 4.5 3.4 8.3 8 9 4.6-.7 8-4.5 8-9V6l-8-3Z"/><path d="m9 12 2 2 4-4"/>',
+  calc:   '<rect x="5" y="2" width="14" height="20" rx="2"/><path d="M8 6h8M8 11h.01M12 11h.01M16 11h.01M8 15h.01M12 15h.01M16 15v3M8 18h.01M12 18h.01"/>',
+  door:   '<path d="M5 21V4a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v17"/><path d="M3 21h18"/><path d="M15 12h.01"/>',
+  list:   '<path d="M9 6h11M9 12h11M9 18h11"/><path d="m3.5 6 1 1 2-2M3.5 12l1 1 2-2M3.5 18l1 1 2-2"/>',
+  check:  '<path d="m5 12 5 5L20 7"/>',
+  ext:    '<path d="M14 4h6v6"/><path d="M20 4 10 14"/><path d="M19 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h5"/>',
+  copy:   '<rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a1 1 0 0 1 1-1h10"/>',
+  info:   '<circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/>',
+  image:  '<rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><path d="m21 16-5-5-9 9"/>',
+};
+const svg = (name, sw = 2) =>
+  `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="${sw}" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONS[name] || ""}</svg>`;
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));
+const host = u => { try { return new URL(u).host + new URL(u).pathname.replace(/\/$/, ""); } catch { return ""; } };
+
+/* ---------- Site chrome ---------- */
+document.title = SITE.brand;
+document.getElementById("brand-name").textContent = SITE.brand;
+document.getElementById("hero-eyebrow").textContent = SITE.eyebrow;
+document.getElementById("hero-title").innerHTML = SITE.title;
+document.getElementById("hero-lead").textContent = SITE.lead;
+document.getElementById("footer-left").textContent = SITE.footerLeft;
+document.getElementById("footer-right").textContent = SITE.footerRight;
+
+document.getElementById("nav-links").innerHTML =
+  TOOLS.map(t => `<a href="#${t.id}">${esc(t.name)}</a>`).join("");
+
+document.getElementById("quick").innerHTML = TOOLS.map(t => `
+  <a href="#${t.id}" style="--c1:${t.colors[0]};--c2:${t.colors[1]}">
+    <span class="t-icon">${svg(t.icon)}</span>
+    <span><span class="q-name">${esc(t.name)}</span><br><span class="q-sub">${esc(t.kicker)}</span></span>
+  </a>`).join("");
+
+/* ---------- Tool sections ---------- */
+const placeholder = (t, s) => `
+  <div class="placeholder"><div>
+    <div class="ph-icon">${svg("image", 1.5)}</div>
+    Screenshot coming soon<br><code>${esc(s?.src || "screenshots/" + t.id + "-1.png")}</code>
+  </div></div>`;
+
+document.getElementById("tools").innerHTML = TOOLS.map((t, i) => {
+  const shots = t.screenshots?.length ? t.screenshots : [{ src: "", caption: "" }];
+  const main = shots[0];
+  const launch = t.url
+    ? `<a class="btn btn-primary" href="${esc(t.url)}" target="_blank" rel="noopener">Launch ${esc(t.name)} ${svg("ext", 2.2)}</a>`
+    : `<span class="btn" aria-disabled="true">Link coming soon</span>`;
+  const copy = t.url && t.copyable
+    ? `<button class="btn btn-ghost" type="button" data-copy="${i}">${svg("copy")}<span>Copy link</span></button>` : "";
+  return `
+  <section class="tool${i % 2 ? " flip" : ""}" id="${t.id}" style="--c1:${t.colors[0]};--c2:${t.colors[1]}">
+    <div class="container tool-grid">
+      <div class="tool-copy reveal">
+        <div class="tool-head">
+          <span class="t-icon">${svg(t.icon)}</span>
+          <span class="tool-kicker">${esc(t.kicker)}</span>
+        </div>
+        <h2>${esc(t.name)}</h2>
+        <p class="tagline">${esc(t.tagline)}</p>
+        <p class="desc">${esc(t.description)}</p>
+        <ul class="features">
+          ${(t.features || []).map(([h, d]) => `
+            <li><span class="check">${svg("check", 3)}</span><div><b>${esc(h)}</b><span>${esc(d)}</span></div></li>`).join("")}
+        </ul>
+        <div class="tool-actions">${launch}${copy}</div>
+        ${t.note ? `<div class="access-note">${svg("info")}<span>${esc(t.note)}</span></div>` : ""}
+      </div>
+      <div class="shot-wrap reveal" data-tool="${i}">
+        <div class="frame">
+          <div class="frame-bar"><i></i><i></i><i></i><span class="frame-url">${esc(host(t.url) || t.name)}</span></div>
+          <button class="shot-main" type="button" aria-label="Enlarge screenshot of ${esc(t.name)}">
+            ${placeholder(t, main)}
+            ${main.src ? `<img src="${esc(main.src)}" alt="${esc(t.name)}: ${esc(main.caption)}" loading="lazy">` : ""}
+          </button>
+        </div>
+        ${shots.length > 1 ? `<div class="thumbs">${shots.map((s, j) => `
+          <button class="thumb" type="button" data-idx="${j}" aria-current="${j === 0}" aria-label="Show ${esc(s.caption || "screenshot " + (j + 1))}">
+            <img src="${esc(s.src)}" alt="" loading="lazy">
+          </button>`).join("")}</div>` : ""}
+        <div class="caption">${esc(main.caption)}</div>
+      </div>
+    </div>
+  </section>`;
+}).join("");
+
+/* Hide broken images so the styled placeholder shows through. */
+document.querySelectorAll(".shot-main img, .thumb img").forEach(img => {
+  const fail = () => { img.style.display = "none"; img.dataset.missing = "1"; };
+  img.addEventListener("error", fail);
+  img.addEventListener("load", () => { img.style.display = ""; delete img.dataset.missing; });
+  if (img.complete && img.naturalWidth === 0 && img.src) fail();
+});
+
+/* ---------- Screenshot switching + lightbox ---------- */
+const lb = document.getElementById("lightbox"), lbImg = document.getElementById("lb-img"), lbCap = document.getElementById("lb-cap");
+document.addEventListener("click", async e => {
+  const thumb = e.target.closest(".thumb");
+  if (thumb) {
+    const wrap = thumb.closest(".shot-wrap"), t = TOOLS[wrap.dataset.tool], s = t.screenshots[thumb.dataset.idx];
+    const img = wrap.querySelector(".shot-main img");
+    img.src = s.src; img.alt = `${t.name}: ${s.caption}`;
+    wrap.querySelector(".caption").textContent = s.caption || "";
+    wrap.querySelectorAll(".thumb").forEach(b => b.setAttribute("aria-current", b === thumb));
+    return;
+  }
+  const main = e.target.closest(".shot-main");
+  if (main) {
+    const img = main.querySelector("img");
+    if (!img || img.dataset.missing) return;
+    lbImg.src = img.src; lbImg.alt = img.alt;
+    lbCap.textContent = main.closest(".shot-wrap").querySelector(".caption").textContent;
+    lb.classList.add("open");
+    return;
+  }
+  if (e.target === lb || e.target.id === "lb-close") { lb.classList.remove("open"); return; }
+
+  const cp = e.target.closest("[data-copy]");
+  if (cp) {
+    const label = cp.querySelector("span");
+    try { await navigator.clipboard.writeText(TOOLS[cp.dataset.copy].url); label.textContent = "Copied ✓"; }
+    catch { label.textContent = "Copy failed"; }
+    setTimeout(() => (label.textContent = "Copy link"), 1600);
+  }
+});
+document.addEventListener("keydown", e => { if (e.key === "Escape") lb.classList.remove("open"); });
+
+/* ---------- Theme toggle (remembered per browser) ---------- */
+const root = document.documentElement;
+try { const saved = localStorage.getItem("theme"); if (saved) root.dataset.theme = saved; } catch {}
+document.getElementById("theme-btn").addEventListener("click", () => {
+  const isLight = root.dataset.theme === "light" ||
+    (!root.dataset.theme && matchMedia("(prefers-color-scheme: light)").matches);
+  root.dataset.theme = isLight ? "dark" : "light";
+  try { localStorage.setItem("theme", root.dataset.theme); } catch {}
+});
+
+/* ---------- Reveal on scroll ---------- */
+const io = "IntersectionObserver" in window
+  ? new IntersectionObserver(es => es.forEach(en => { if (en.isIntersecting) { en.target.classList.add("in"); io.unobserve(en.target); } }), { threshold: 0.12 })
+  : null;
+document.querySelectorAll(".reveal").forEach(el => io ? io.observe(el) : el.classList.add("in"));
+</script>
+</body>
+</html>
